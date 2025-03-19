@@ -14,11 +14,11 @@ export default function Home() {
     <GlobalStateProvider >
       <Navbar />
       <Modal />
-      {/* <BurgerMenu /> */}
-      {/* <Hero /> */}
+      <BurgerMenu />
+      <Hero />
       <About />
       <Projects />
-      {/* <Services /> */}
+      <Services />
       <Footer />
     </GlobalStateProvider>
   );
