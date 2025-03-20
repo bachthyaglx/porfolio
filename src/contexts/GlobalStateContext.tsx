@@ -1,50 +1,44 @@
+"use client";
 
-'use client'
+import React, { createContext, useState, useContext, useMemo } from "react";
+import { GlobalState } from "@/types/types.d";
 
-import React, { createContext, useState, useContext } from 'react';
-import { GlobalState } from '../types/types.d';
+// Provide an initial default value
+const defaultState: GlobalState = {
+  isMenuOpen: false,
+  toggleMenu: () => {},
+  exitMenu: () => {},
+  isModalOpen: false,
+  toggleModal: () => {},
+  exitModal: () => {},
+};
 
-const GlobalStateContext = createContext<GlobalState | undefined>(undefined);
+// Use the correct type in createContext
+const GlobalStateContext = createContext<GlobalState>(defaultState);
 
+// Hook to use global state
 export const useGlobalState = (): GlobalState => {
   const context = useContext(GlobalStateContext);
-  if (!context) {
-    throw new Error('useGlobalState must be used within a GlobalStateProvider');
-  }
+  if (!context) throw new Error("useGlobalState must be used within GlobalStateProvider");
   return context;
 };
 
-export const GlobalStateProvider = ({ children }: {children: any}) => {
-  const [isMenuOpen, setMenuOpen] = useState<boolean>(false);
-  const [isModalOpen, setModalOpen] = useState<boolean>(false);
+// Provide the state inside a Provider component
+export const GlobalStateProvider = ({ children }: { children: React.ReactNode }) => {
+  const [isMenuOpen, setMenuOpen] = useState(false);
+  const [isModalOpen, setModalOpen] = useState(false);
 
-  const toggleModal = (): void => {
-    setModalOpen(prevState => !prevState);
-  };
-
-  const toggleMenu = (): void => {
-    setMenuOpen(prevState => !prevState);
-  };
-
-  const exitMenu = (): void => {
-    setMenuOpen(false);
-  };
-
-  const exitModal = (): void => {
-    setModalOpen(false);
-  };
-
-  const value: GlobalState = {
-    isMenuOpen,
-    toggleMenu,
-    isModalOpen,
-    toggleModal,
-    exitMenu,
-    exitModal,
-  };
-  return (
-    <GlobalStateContext.Provider value={value}>
-      {children}
-    </GlobalStateContext.Provider>
+  const contextValue = useMemo(
+    () => ({
+        isMenuOpen,
+        toggleMenu: () => setMenuOpen((prev) => !prev),
+        exitMenu: () => setMenuOpen(false),
+        isModalOpen,
+        toggleModal: () => setModalOpen((prev) => !prev),
+        exitModal: () => setModalOpen(false),
+    }),
+    [isMenuOpen, isModalOpen]
   );
+
+  return <GlobalStateContext.Provider value={contextValue}>{children}</GlobalStateContext.Provider>;
 };

@@ -1,9 +1,10 @@
+// Define the type for the global state
 export interface GlobalState {
-  isModalOpen: boolean;
-  toggleModal: () => void;
   isMenuOpen: boolean;
   toggleMenu: () => void;
   exitMenu: () => void;
+  isModalOpen: boolean;
+  toggleModal: () => void;
   exitModal: () => void;
 }
 

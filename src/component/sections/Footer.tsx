@@ -1,4 +1,5 @@
-import SocialMedia from "@/static/SocialMedia";
+/* eslint-disable @next/next/no-img-element */
+import SocialMedia from "@/ui/SocialMedia";
 
 function Footer() {
     return <div className="bg-gradient-to-r from-gradientLeft to-gradientRight">

@@ -1,4 +1,4 @@
-function Contact () {
+function Form () {
   return (
     <section className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 desktop:w-1/3 mobile:w-full mobile:px-4 mobile:max-w-3xl">
       <div className="px-2 mx-auto">
@@ -21,4 +21,4 @@ function Contact () {
     </section>)
 }
 
-export default Contact;
+export default Form;
