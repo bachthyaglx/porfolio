@@ -1,5 +1,5 @@
 import timelineData from "../../public/data/timeline.json"
-import Tag from "./Tag";
+import Tag from "../component/ui/Tag";
 
 function Timeline (){
 
