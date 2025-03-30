@@ -1,10 +1,8 @@
-/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import Typing from '@/components/ui/Typing';
 import SocialMedia from '@/components/ui/SocialMedia';
-import timelineData from "../../public/data/timeline.json"
-import Link from 'next/link';
+import Image from 'next/image'
 
 export default function Home() {
   return (
@@ -26,10 +24,12 @@ export default function Home() {
             </div>
           </div>
 
-          <img
+          <Image
             className="w-2/5 mobile:w-full mobile:max-w-xl object-contain self-center animate-scalepulse" 
             src="/portraitdummy.webp" 
             alt="Portrait" 
+            width={100}
+            height={100}
           />
           
         </div>
@@ -38,7 +38,7 @@ export default function Home() {
       
       {/* Footer */}
       <div className="bg-gradient-to-r from-gradientLeft to-gradientRight">
-        <img className="w-full h-44" src="/transitions/transition_grey.svg" alt="transition" />
+        <Image className="w-full h-44" src="/transitions/transition_grey.svg" alt="transition" width={100} height={100}/>
         <footer className="flex flex-col items-center">
             {/* <div className="pt-5">
                 <SocialMedia size={35} />
