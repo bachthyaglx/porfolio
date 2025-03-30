@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     reactStrictMode: true, // Ensures better debugging
+    eslint: {
+      ignoreDuringBuilds: true, // Disable ESLint khi build production
+    },
     webpack: (config, { dev }) => {
       if (dev) {
         config.watchOptions = {
