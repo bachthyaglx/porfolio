@@ -49,7 +49,7 @@ export default function ExperiencePage() {
             <h1 className="text-4xl font-bold">Thy</h1>
             <h2 className="text-lg text-slate-400">Fullstack Developer</h2>
             <p className="mt-4 text-sm text-slate-300">
-              I'm a fullstack developer with a Computer Science degree. I’ve worked with top tech companies, and my focus now is building fast, accessible apps using modern tech.
+              I&apos;m a fullstack developer with a Computer Science degree. I&apos;ve worked with top tech companies, and my focus now is building fast, accessible apps using modern tech.
             </p>
           </div>
 
@@ -88,16 +88,16 @@ export default function ExperiencePage() {
         <main className="flex-1 min-w-0 scroll-smooth">
           <section id="about" className="scroll-mt-28 max-w-4xl mx-auto">
             <p className="text-slate-300">
-              I’m a developer passionate about crafting accessible, pixel-perfect user interfaces that blend thoughtful design with robust engineering. My favorite work lies at the intersection of design and development, creating experiences that not only look great but are meticulously built for performance and usability.
+              I&apos;m a developer passionate about crafting accessible, pixel-perfect user interfaces that blend thoughtful design with robust engineering. My favorite work lies at the intersection of design and development, creating experiences that not only look great but are meticulously built for performance and usability.
             </p><br/>
             <p className="text-slate-300">      
-              Currently, I'm a Senior Front-End Engineer at Klaviyo, specializing in accessibility. I contribute to the creation and maintenance of UI components that power Klaviyo’s frontend, ensuring our platform meets web accessibility standards and best practices to deliver an inclusive user experience.
+              Currently, I&apos;m a Senior Front-End Engineer at Klaviyo, specializing in accessibility. I contribute to the creation and maintenance of UI components that power Klaviyo&apos;s frontend, ensuring our platform meets web accessibility standards and best practices to deliver an inclusive user experience.
             </p><br/>
             <p className="text-slate-300">
-              In the past, I've had the opportunity to develop software across a variety of settings — from advertising agencies and large corporations to start-ups and small digital product studios. Additionally, I also released a comprehensive video course a few years ago, guiding learners through building a web app with the Spotify API.
+              In the past, I&apos;ve had the opportunity to develop software across a variety of settings — from advertising agencies and large corporations to start-ups and small digital product studios. Additionally, I also released a comprehensive video course a few years ago, guiding learners through building a web app with the Spotify API.
             </p><br/>
             <p className="text-slate-300">
-              In my spare time, I’m usually climbing, reading, hanging out with my wife and two cats, or running around Hyrule searching for Korok seeds.
+              In my spare time, I&apos;m usually climbing, reading, hanging out with my wife and two cats, or running around Hyrule searching for Korok seeds.
             </p>
           </section>
 
