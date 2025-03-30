@@ -21,7 +21,8 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## Deploy on Vercel
 The tutorial how to deploy next.js app on Vercel
-- [Deploy to Vercel](https://nextjs.org/learn/pages-router/deploying-nextjs-app-deploy)
+- Option 1: [Use Vercel platform](https://nextjs.org/learn/pages-router/deploying-nextjs-app-deploy)
+- Option 2: [Use github action](https://staticmania.com/blog/how-to-deploy-next-js-application-with-github-action) 
 - Result: http://thy-khuu-porfolio.vercel.app
 
 ## Learn More
