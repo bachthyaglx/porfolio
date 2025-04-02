@@ -28,8 +28,8 @@ export default function Home() {
             className="w-2/5 mobile:w-full mobile:max-w-xl object-contain self-center animate-scalepulse" 
             src="/portraitdummy.webp" 
             alt="Portrait" 
-            width={100}
-            height={100}
+            width={800}
+            height={800}
           />
           
         </div>
@@ -38,7 +38,7 @@ export default function Home() {
       
       {/* Footer */}
       <div className="bg-gradient-to-r from-gradientLeft to-gradientRight">
-        <Image className="w-full h-44" src="/transitions/transition_grey.svg" alt="transition" width={100} height={100}/>
+        {/* <Image className="w-full h-44" src="/transitions/transition_grey.svg" alt="transition" width={800} height={800}/> */}
         <footer className="flex flex-col items-center">
             {/* <div className="pt-5">
                 <SocialMedia size={35} />
