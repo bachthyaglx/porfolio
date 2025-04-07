@@ -13,6 +13,9 @@ const uri =
     ? process.env.NEXT_PUBLIC_PROD_GRAPHQL_URL
     : process.env.NEXT_PUBLIC_DEV_GRAPHQL_URL;
 
+console.log('🌐 API ENV:', apiEnv);
+console.log('🔗 GraphQL URL:', uri);
+
 const authLink = setContext((_, { headers }) => {
   // ⚠️ Avoid ReferenceError: localStorage is not defined
   const token = typeof window !== 'undefined' ? localStorage.getItem("app-user-token") : null;
