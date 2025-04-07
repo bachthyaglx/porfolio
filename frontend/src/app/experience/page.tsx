@@ -17,13 +17,14 @@ export default function ExperiencePage() {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
 
-  const formatMonthYear = (timestamp: string | number) => {
-    const date = new Date(+timestamp);
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short', // hoặc 'long' nếu bạn muốn "January" thay vì "Jan"
-    });
-  };
+  const formatMonthYear = (timestamp: string | number | null | undefined) => {
+    if (!timestamp) return 'N/A';
+  
+    const date = new Date(timestamp);
+    return isNaN(date.getTime())
+      ? 'Invalid Date'
+      : date.toLocaleDateString('en-US', { year: 'numeric', month: 'short' });
+  };  
 
   const handleDelete = async (id: string) => {
     await deleteWork({ variables: { id } });

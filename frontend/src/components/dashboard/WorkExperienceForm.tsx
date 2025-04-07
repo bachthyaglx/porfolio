@@ -37,17 +37,21 @@ export default function WorkExperienceForm({ isOpen, onClose, onSuccess, initial
 
   const [deleteOnSubmit, setDeleteOnSubmit] = useState({ contract: false, feedback: false });
 
+  const toInputDate = (dateStr: string | null | undefined) =>
+    dateStr ? new Date(dateStr).toISOString().split('T')[0] : '';
+  
   useEffect(() => {
     if (initialData) {
       setForm({
         title: initialData.title || '',
         company: initialData.company || '',
         type: initialData.type || '',
-        start: initialData.startDate ? new Date(initialData.startDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short' }) : '',
-        end: initialData.endDate ? new Date(initialData.startDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short' }) : '',
+        start: toInputDate(initialData.startDate),
+        end: toInputDate(initialData.endDate),
         skills: (initialData.skills || []).join(', '),
         description: initialData.description || '',
       });
+  
       setContractFileUrl(initialData.contractFileUrl || null);
       setFeedbackFileUrl(initialData.feedbackFileUrl || null);
     }
