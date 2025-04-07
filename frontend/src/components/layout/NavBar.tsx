@@ -14,15 +14,31 @@ function NavBar() {
   // Detect screen size
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 768); // Tailwind's md = 768px
+      setIsMobile(window.innerWidth < 768); // Detect screen size
     };
-
-    handleResize(); // Initial check
+  
+    handleResize();
     window.addEventListener('resize', handleResize);
-
     return () => window.removeEventListener('resize', handleResize);
   }, []);
-
+  
+  useEffect(() => {
+    let lastScrollY = window.scrollY;
+  
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+  
+      if (menuOpen && currentScrollY > lastScrollY) {
+        setMenuOpen(false); // Close only when scrolling down
+      }
+  
+      lastScrollY = currentScrollY;
+    };
+  
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [menuOpen]);
+  
   useEffect(() => {
     const token = localStorage.getItem('app-user-token');
     setIsLoggedIn(!!token);
@@ -81,35 +97,41 @@ function NavBar() {
       </div>
 
       {/* Mobile dropdown menu */}
-      {isMobile && menuOpen && (
-        <div className="bg-black px-6 pb-4 flex flex-col gap-4">
-          <Link href="/" onClick={() => setMenuOpen(false)}>Home</Link>
-          <Link href="/experience" onClick={() => setMenuOpen(false)}>Experience</Link>
-          <Link href="/projects" onClick={() => setMenuOpen(false)}>Projects</Link>
-          <Link href="/certificates" onClick={() => setMenuOpen(false)}>Certificates</Link>
-          <Link href="/education" onClick={() => setMenuOpen(false)}>Education</Link>
-          <Link href="/contact" onClick={() => setMenuOpen(false)}>Contact</Link>
-          {!isLoggedIn ? (
-            <button
-              onClick={() => {
-                setShowLogin(true);
-                setMenuOpen(false);
-              }}
-              className="border-2 border-white rounded-3xl px-3 py-1 hover:bg-white hover:text-black transition"
-            >
-              Login
-            </button>
-          ) : (
-            <button
-              onClick={() => {
-                handleLogout();
-                setMenuOpen(false);
-              }}
-              className="border-2 border-red-500 rounded-3xl px-3 py-1 hover:bg-red-500 transition"
-            >
-              Logout
-            </button>
-          )}
+      {isMobile && (
+        <div
+          className={`bg-black px-6 overflow-hidden transition-all duration-300 ease-in-out ${
+            menuOpen ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
+          }`}
+        >
+          <div className="flex flex-col gap-4 py-4">
+            <Link href="/" onClick={() => setMenuOpen(false)}>Home</Link>
+            <Link href="/experience" onClick={() => setMenuOpen(false)}>Experience</Link>
+            <Link href="/projects" onClick={() => setMenuOpen(false)}>Projects</Link>
+            <Link href="/certificates" onClick={() => setMenuOpen(false)}>Certificates</Link>
+            <Link href="/education" onClick={() => setMenuOpen(false)}>Education</Link>
+            <Link href="/contact" onClick={() => setMenuOpen(false)}>Contact</Link>
+            {!isLoggedIn ? (
+              <button
+                onClick={() => {
+                  setShowLogin(true);
+                  setMenuOpen(false);
+                }}
+                className="border-2 border-white rounded-3xl px-3 py-1 hover:bg-white hover:text-black transition"
+              >
+                Login
+              </button>
+            ) : (
+              <button
+                onClick={() => {
+                  handleLogout();
+                  setMenuOpen(false);
+                }}
+                className="border-2 border-red-500 rounded-3xl px-3 py-1 hover:bg-red-500 transition"
+              >
+                Logout
+              </button>
+            )}
+          </div>
         </div>
       )}
 
