@@ -23,9 +23,9 @@ export default function Education() {
   };
 
   return (
-    <section className="min-h-screen px-6 py-20 bg-gradient-to-r from-gray-900 to-black text-white">
-      <div className="max-w-6xl mx-auto">
-        <h2 className="text-4xl font-bold mb-10">Educations</h2>
+    <section className="bg-slate-900 text-white min-h-screen pt-24 px-6 desktop:px-20">
+      <div className="max-w-7xl mx-auto">
+        <h2 className="text-3xl font-bold mb-10">Educations</h2>
 
         {loading && <p>Loading...</p>}
 
