@@ -16,9 +16,21 @@ dotenv.config();
 const prisma = new PrismaClient();
 const app = express();
 
-// ✅ Enable CORS globally
+// ✅ Enable CORS for specific origins
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://thy-khuu-porfolio.vercel.app',
+];
+
 app.use(cors({
-  origin: true,
+  origin: function (origin, callback) {
+    // Allow no origin (like curl or postman)
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS: ' + origin));
+    }
+  },
   credentials: true,
 }));
 
