@@ -44,6 +44,7 @@ app.use(express.urlencoded({ extended: true }));
 // ✅ Create schema and server
 const schema = makeExecutableSchema({ typeDefs, resolvers });
 const server = new ApolloServer({ schema });
+const port = process.env.PORT || 4000;
 
 await server.start();
 
@@ -74,6 +75,6 @@ app.use(
   })
 );
 
-app.listen({ port: 4000 }, () => {
-  console.log(`🚀 Apollo Server running at http://localhost:4000/graphql`);
+app.listen(port, () => {
+  console.log(`🚀 Apollo Server running at http://localhost:${port}/graphql`);
 });
