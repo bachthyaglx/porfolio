@@ -15,7 +15,6 @@ dotenv.config();
 
 const prisma = new PrismaClient();
 const app = express();
-const port = process.env.PORT
 
 // ✅ Enable CORS globally
 app.use(cors({
@@ -65,6 +64,6 @@ app.use(
   })
 );
 
-app.listen({ port: port }, () => {
-  console.log(`🚀 Apollo Server running at http://localhost:${port}/graphql`);
+app.listen({ port: 4000 }, () => {
+  console.log(`🚀 Apollo Server running at ${process.env.APP_URL}/graphql`);
 });
