@@ -21,10 +21,16 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## Deploy on Vercel
 The tutorial how to deploy next.js app on Vercel
-- [Deploy to Vercel](https://nextjs.org/learn/pages-router/deploying-nextjs-app-deploy)
+- Option 1: [Use Vercel platform](https://nextjs.org/learn/pages-router/deploying-nextjs-app-deploy)
+- Option 2: [Use github action](https://staticmania.com/blog/how-to-deploy-next-js-application-with-github-action) 
 - Result: http://thy-khuu-porfolio.vercel.app
 
 ## Learn More
 To learn more about Next.js, take a look at the following resources:
 - [React Foundations](https://nextjs.org/learn/react-foundations)
 - [Learn Next.js](https://nextjs.org/learn)
+
+## Web Architecture
+https://medium.com/@rahamatelahi2/implementing-redis-caching-in-a-full-stack-web-application-4f3291e3a0e8
+
+![alt text](image.png)

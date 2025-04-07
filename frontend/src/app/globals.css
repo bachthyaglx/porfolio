@@ -24,8 +24,23 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+
+  embed::-webkit-scrollbar,
+  iframe::-webkit-scrollbar {
+    display: none;
+  }
+  embed,
+  iframe {
+    scrollbar-width: none;       /* Firefox */
+    -ms-overflow-style: none;    /* IE 10+ */
+  }
 }
 
 * {
   scroll-behavior: smooth !important;
+}
+
+/* Extended parts */
+html {
+  scroll-behavior: smooth;
 }
