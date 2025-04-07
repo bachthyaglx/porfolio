@@ -10,16 +10,39 @@ import { PrismaClient } from '@prisma/client';
 import { typeDefs } from './graphql/typeDefs.js';
 import { resolvers } from './graphql/resolvers.js';
 import { graphqlUploadExpress } from 'graphql-upload-minimal';
+import fs from 'fs';
 
-dotenv.config();
+// ✅ Load environment variables dynamically
+const envFile = process.env.NODE_ENV === 'production' ? '.env.production' : '.env.development';
+if (fs.existsSync(envFile)) {
+  dotenv.config({ path: envFile });
+  console.log(`✅ Loaded environment from ${envFile}`);
+} else {
+  console.warn(`⚠️ Environment file ${envFile} not found, falling back to default .env`);
+  dotenv.config();
+}
 
-const app = express(); 
+console.log('🌍 ENV MODE:', process.env.NODE_ENV);
+console.log('🐘 Postgres:', process.env.DATABASE_URL);
+console.log('📦 Redis:', process.env.REDIS_URL);
 
+// ✅ Import Redis client (already connected inside utils/redis.js)
+import redis from './utils/redis.js';
+
+const app = express();
 const prisma = new PrismaClient();
+const port = process.env.PORT || 4000;
+const env = process.env.NODE_ENV;
 
-// ✅ Enable CORS for specific origins
+const baseUrl =
+  env === 'production'
+    ? 'https://thy-khuu-porfolio-production.up.railway.app'
+    : `http://localhost:${port}`;
+
+// ✅ CORS config
 const allowedOrigins = [
   'http://localhost:3000',
+  'http://localhost:4000',
   'https://thy-khuu-porfolio.vercel.app',
 ];
 
@@ -34,21 +57,16 @@ app.use(cors({
   credentials: true,
 }));
 
-// ✅ graphql-upload must come before any body parsers
+// ✅ Middleware
 app.use(graphqlUploadExpress());
-
-// ✅ Parse body
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// ✅ Create schema and server
+// ✅ Apollo Server
 const schema = makeExecutableSchema({ typeDefs, resolvers });
 const server = new ApolloServer({ schema });
-const port = process.env.PORT || 4000;
-
 await server.start();
 
-// ✅ Attach middleware with auth context
 app.use(
   '/graphql',
   expressMiddleware(server, {
@@ -76,5 +94,23 @@ app.use(
 );
 
 app.listen(port, () => {
-  console.log(`🚀 Apollo Server running at http://localhost:${port}/graphql`);
+  console.log(`🚀 Apollo Server running in ${env} mode at ${baseUrl}/graphql`);
+});
+
+// ✅ On Ctrl+C — flush Redis + disconnect Prisma
+process.on('SIGINT', async () => {
+  try {
+    console.log('\n🧹 Cleaning up resources...');
+    await redis.flushAll();
+    await redis.quit();
+    console.log('✅ Redis disconnected');
+
+    await prisma.$disconnect();
+    console.log('✅ Prisma disconnected');
+    console.log('👋 Server exiting...');
+    process.exit(0);
+  } catch (err) {
+    console.error('❌ Error during shutdown:', err);
+    process.exit(1);
+  }
 });
