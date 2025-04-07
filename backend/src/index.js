@@ -13,6 +13,8 @@ import { graphqlUploadExpress } from 'graphql-upload-minimal';
 
 dotenv.config();
 
+const app = express(); 
+
 const prisma = new PrismaClient();
 
 // ✅ Enable CORS for specific origins
@@ -23,7 +25,6 @@ const allowedOrigins = [
 
 app.use(cors({
   origin: function (origin, callback) {
-    // Allow no origin (like curl or postman)
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
@@ -32,8 +33,6 @@ app.use(cors({
   },
   credentials: true,
 }));
-
-const app = express();
 
 // ✅ graphql-upload must come before any body parsers
 app.use(graphqlUploadExpress());
@@ -56,24 +55,22 @@ app.use(
       const auth = req.headers.authorization || '';
       const token = auth.replace('Bearer ', '');
       let userId = null;
-    
+
       if (token) {
         try {
-          const decoded = verifyToken(token); // { userId, tokenId }
-    
+          const decoded = verifyToken(token);
           const user = await prisma.user.findUnique({ where: { id: decoded.userId } });
           if (!user || user.tokenId !== decoded.tokenId) {
             throw new Error('Token is no longer valid');
           }
-    
           userId = user.id;
         } catch (err) {
           console.error('❌ Invalid token:', err);
         }
       }
-    
+
       return { userId, prisma };
-    },    
+    },
   })
 );
 
