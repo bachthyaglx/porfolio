@@ -14,7 +14,6 @@ import { graphqlUploadExpress } from 'graphql-upload-minimal';
 dotenv.config();
 
 const prisma = new PrismaClient();
-const app = express();
 
 // ✅ Enable CORS for specific origins
 const allowedOrigins = [
@@ -33,6 +32,8 @@ app.use(cors({
   },
   credentials: true,
 }));
+
+const app = express();
 
 // ✅ graphql-upload must come before any body parsers
 app.use(graphqlUploadExpress());
