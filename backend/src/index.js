@@ -75,5 +75,5 @@ app.use(
 );
 
 app.listen({ port: 4000 }, () => {
-  console.log(`🚀 Apollo Server running at ${process.env.APP_URL}/graphql`);
+  console.log(`🚀 Apollo Server running at http://localhost:4000/graphql`);
 });
