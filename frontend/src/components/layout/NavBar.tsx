@@ -20,34 +20,42 @@ function NavBar() {
 
   // Scroll direction detection (close only when scrolling down)
   useEffect(() => {
+    let ignoreScroll = false;
+    let timeoutId: ReturnType<typeof setTimeout>;
+  
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-
-      if (menuOpen && !ignoreScrollRef.current && currentScrollY > lastScrollYRef.current) {
+  
+      if (menuOpen && !ignoreScroll && currentScrollY > lastScrollYRef.current) {
         setMenuOpen(false);
       }
-
+  
       lastScrollYRef.current = currentScrollY;
     };
-
-    if (menuOpen) {
-      ignoreScrollRef.current = true;
-      const timeout = setTimeout(() => {
-        ignoreScrollRef.current = false;
-      }, 300);
-
-      return () => clearTimeout(timeout);
-    }
-
+  
+    // Attach scroll listener
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [menuOpen]);
+  
+    // Ignore scroll for 300ms after menu opens
+    if (menuOpen) {
+      ignoreScroll = true;
+      timeoutId = setTimeout(() => {
+        ignoreScroll = false;
+      }, 300);
+    }
+  
+    // Cleanup
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      clearTimeout(timeoutId);
+    };
+  }, [menuOpen]);  
 
   const handleLoginSuccess = () => {
     setIsLoggedIn(true);
     setShowLogin(false);
   };
-
+  
   const handleLogout = () => {
     localStorage.removeItem('app-user-token');
     setIsLoggedIn(false);
