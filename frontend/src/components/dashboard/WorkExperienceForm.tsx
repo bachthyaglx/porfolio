@@ -43,8 +43,8 @@ export default function WorkExperienceForm({ isOpen, onClose, onSuccess, initial
         title: initialData.title || '',
         company: initialData.company || '',
         type: initialData.type || '',
-        start: initialData.startDate ? new Date(+initialData.startDate).toISOString().split('T')[0] : '',
-        end: initialData.endDate ? new Date(+initialData.endDate).toISOString().split('T')[0] : '',
+        start: initialData.startDate ? new Date(initialData.startDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short' }) : '',
+        end: initialData.endDate ? new Date(initialData.startDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short' }) : '',
         skills: (initialData.skills || []).join(', '),
         description: initialData.description || '',
       });
