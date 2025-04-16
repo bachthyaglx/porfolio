@@ -25,6 +25,7 @@ export const GET_PROJECTS = gql`
       title
       skills
       description
+      category
       projectUrl
       createdAt
     }
@@ -71,8 +72,8 @@ export const LOGIN = gql`
 `;
 
 export const SINGLE_UPLOAD = gql`
-  mutation SingleUpload($input: SingleFileInput!) {
-    singleUpload(input: $input)
+  mutation SingleUpload($file: Upload!) {
+    singleUpload(file: $file)
   }
 `;
 
@@ -139,12 +140,13 @@ export const EDIT_WORK_EXPERIENCE = gql`
 `;
 
 export const EDIT_PROJECT = gql`
-  mutation EditProject($id: String!, $input: EditProjectInput!) {
+  mutation EditProject($id: String!, $input: CreateProjectInput!) {
     editProject(id: $id, input: $input) {
       id
       title
       skills
       description
+      category
       projectUrl
       createdAt
     }

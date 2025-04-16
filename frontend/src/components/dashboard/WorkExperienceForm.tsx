@@ -1,3 +1,4 @@
+// src/components/dashboard/WorkExperienceForm.tsx
 'use client';
 
 import { useMutation } from '@apollo/client';
@@ -83,7 +84,7 @@ export default function WorkExperienceForm({ isOpen, onClose, onSuccess, initial
         if (initialData?.contractFileUrl && !deleteOnSubmit.contract) {
           await deleteFileFromS3({ variables: { fileUrl: initialData.contractFileUrl } });
         }
-        const res = await uploadFile({ variables: { input: { file: contractFile } } });
+        const res = await uploadFile({ variables: { file: contractFile } });
         uploadedContractUrl = res?.data?.singleUpload;
       }
 
@@ -91,7 +92,7 @@ export default function WorkExperienceForm({ isOpen, onClose, onSuccess, initial
         if (initialData?.feedbackFileUrl && !deleteOnSubmit.feedback) {
           await deleteFileFromS3({ variables: { fileUrl: initialData.feedbackFileUrl } });
         }
-        const res = await uploadFile({ variables: { input: { file: feedbackFile } } });
+        const res = await uploadFile({ variables: { file: feedbackFile } });
         uploadedFeedbackUrl = res?.data?.singleUpload;
       }
 
@@ -127,13 +128,13 @@ export default function WorkExperienceForm({ isOpen, onClose, onSuccess, initial
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       {/* Form fields... */}
-      <input name="title" value={form.title} onChange={handleChange} className="w-full border px-3 py-2 rounded text-black" placeholder="Title" required />
-      <input name="company" value={form.company} onChange={handleChange} className="w-full border px-3 py-2 rounded text-black" placeholder="Company" required />
-      <input name="type" value={form.type} onChange={handleChange} className="w-full border px-3 py-2 rounded text-black" placeholder="Type" required />
+      <input name="title" value={form.title} onChange={handleChange} className="w-full border px-3 py-2 rounded text-black" placeholder="Job title (eg: Software Engineer" required />
+      <input name="company" value={form.company} onChange={handleChange} className="w-full border px-3 py-2 rounded text-black" placeholder="Company name (eg: Intel Products Company)" required />
+      <input name="type" value={form.type} onChange={handleChange} className="w-full border px-3 py-2 rounded text-black" placeholder="Type (eg: Part-time, Full-time)" required />
       <input name="start" type="date" value={form.start} onChange={handleChange} className="w-full border px-3 py-2 rounded text-black" required />
       <input name="end" type="date" value={form.end} onChange={handleChange} className="w-full border px-3 py-2 rounded text-black" />
-      <input name="skills" value={form.skills} onChange={handleChange} className="w-full border px-3 py-2 rounded text-black" placeholder="Skills (comma separated)" />
-      <textarea name="description" value={form.description} onChange={handleChange} className="w-full border px-3 py-2 rounded text-black" placeholder="Description" />
+      <input name="skills" value={form.skills} onChange={handleChange} className="w-full border px-3 py-2 rounded text-black" placeholder="Skills (comma separated, eg: React.js, JavaScript, Redux, etc...)" />
+      <textarea name="description" value={form.description} onChange={handleChange} className="w-full border px-3 py-2 rounded text-black" placeholder="Description (eg: Maintaince the existing software architecture, etc...)" />
 
       <div className="flex gap-6">
         {/* Contract File Upload */}

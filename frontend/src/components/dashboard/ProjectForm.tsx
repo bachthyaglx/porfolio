@@ -21,6 +21,7 @@ export default function ProjectForm({ isOpen, onClose, onSuccess, initialData }:
     description: '',
     skills: '',
     projectUrl: '',
+    category: '', // default category
   });
 
   useEffect(() => {
@@ -29,12 +30,13 @@ export default function ProjectForm({ isOpen, onClose, onSuccess, initialData }:
         title: initialData.title || '',
         description: initialData.description || '',
         skills: (initialData.skills || []).join(', '),
+        category: initialData.category,
         projectUrl: initialData.projectUrl || '',
       });
     }
   }, [initialData]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
@@ -46,6 +48,7 @@ export default function ProjectForm({ isOpen, onClose, onSuccess, initialData }:
         description: form.description,
         skills: form.skills.split(',').map((s) => s.trim()),
         projectUrl: form.projectUrl,
+        category: form.category,
       };
 
       if (initialData?.id) {
@@ -89,6 +92,18 @@ export default function ProjectForm({ isOpen, onClose, onSuccess, initialData }:
         className="w-full border px-4 py-2 rounded text-black"
         required
       />
+      <select
+        name="category"
+        value={form.category}
+        onChange={handleChange}
+        className="w-full border px-4 py-2 rounded text-black"
+        required
+      >
+        <option value="" disabled>Select project</option>
+        <option value="web-development">Web Development</option>
+        <option value="data-science">Data Science</option>
+        <option value="embedded-systems">Embedded Systems</option>
+      </select>
       <input
         name="projectUrl"
         value={form.projectUrl}

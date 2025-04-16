@@ -26,31 +26,27 @@ function NavBar() {
   useEffect(() => {
     let lastScrollY = window.scrollY;
     let ignoreScroll = false;
-  
+
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-  
-      // Only close if menu is open, we're not ignoring scroll,
-      // and the user scrolls down
+
       if (menuOpen && !ignoreScroll && currentScrollY > lastScrollY) {
         setMenuOpen(false);
       }
-  
+
       lastScrollY = currentScrollY;
     };
-  
-    // When menu is opened, ignore scroll events briefly (to allow clicking)
+
     if (menuOpen) {
       ignoreScroll = true;
       const timeout = setTimeout(() => {
         ignoreScroll = false;
-      }, 300); // Ignore scroll for 300ms after opening
+      }, 300);
     }
-  
+
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [menuOpen]);
-  
 
   // Token check
   useEffect(() => {
@@ -73,7 +69,7 @@ function NavBar() {
     <nav className="bg-black text-white shadow-md sticky top-0 z-50">
       {/* Top bar */}
       <div className="px-6 py-4 flex items-center justify-between">
-        <div className="text-lg font-semibold">MyPortfolio</div>
+        <div className="text-lg font-semibold">My Portfolio</div>
 
         {/* Desktop nav */}
         {!isMobile && (
@@ -110,16 +106,22 @@ function NavBar() {
         )}
       </div>
 
+      {/* Backdrop overlay */}
+      {isMobile && menuOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-40"
+          onClick={() => setMenuOpen(false)}
+        />
+      )}
+
       {/* Mobile dropdown menu */}
       {isMobile && (
         <div
-          className={`bg-black px-6 overflow-hidden transition-all duration-300 ease-in-out ${
-            menuOpen
-              ? 'max-h-[500px] opacity-100 visible pointer-events-auto'
-              : 'max-h-0 opacity-0 invisible pointer-events-none'
+          className={`fixed top-0 left-0 right-0 bg-black z-50 transform transition-transform duration-300 ${
+            menuOpen ? 'translate-y-0' : '-translate-y-full'
           }`}
         >
-          <div className="flex flex-col gap-4 py-4">
+          <div className="px-6 py-4 flex flex-col gap-4 pt-20"> {/* pt-20 to offset top bar */}
             <Link href="/" onClick={() => setMenuOpen(false)}>Home</Link>
             <Link href="/experience" onClick={() => setMenuOpen(false)}>Experience</Link>
             <Link href="/projects" onClick={() => setMenuOpen(false)}>Projects</Link>

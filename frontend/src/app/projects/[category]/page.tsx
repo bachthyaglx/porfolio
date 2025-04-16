@@ -1,62 +1,72 @@
-// src/app/experience/page.tsx
+// src/app/projects/[category]/page.tsx
 'use client';
 
 import { useQuery, useMutation } from '@apollo/client';
-import { GET_WORK_EXPERIENCES, DELETE_WORK_EXPERIENCE } from '@/graphql';
+import { GET_PROJECTS, DELETE_PROJECT } from '@/graphql';
+import { useParams } from 'next/navigation';
+import { useState, Key } from 'react';
 import { useIsLoggedIn } from '@/hooks/useIsLoggedIn';
-import { Key, useState } from 'react';
-import WorkExperienceForm from '@/components/dashboard/WorkExperienceForm';
 import LoginModal from '@/components/auth/LoginModal';
+import ProjectForm from '@/components/dashboard/ProjectForm';
 
-export default function ExperiencePage() {
-  const { data, loading, refetch } = useQuery(GET_WORK_EXPERIENCES);
-  const [deleteWork] = useMutation(DELETE_WORK_EXPERIENCE);
+export default function ProjectsByCategoryPage() {
+  const { category } = useParams();
+  const { data, loading, refetch } = useQuery(GET_PROJECTS);
+  const [deleteProject] = useMutation(DELETE_PROJECT);
   const isLoggedIn = useIsLoggedIn();
+
   const [showForm, setShowForm] = useState(false);
   const [editItem, setEditItem] = useState(null);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
 
-  const formatMonthYear = (timestamp: string | number | null | undefined) => {
-    if (!timestamp) return 'N/A';
-    const date = new Date(timestamp);
-    return isNaN(date.getTime())
-      ? 'Invalid Date'
-      : date.toLocaleDateString('en-US', { year: 'numeric', month: 'short' });
+  const readableTitle = (slug: string | string[] | undefined) => {
+    if (typeof slug !== 'string') return 'Projects';
+    const map: Record<string, string> = {
+      'web-development': 'Web Development',
+      'data-science': 'Data Science',
+      'embedded-systems': 'Embedded Systems',
+    };
+    return map[slug] || 'Projects';
   };
 
   const handleDelete = async (id: string) => {
-    await deleteWork({ variables: { id } });
+    await deleteProject({ variables: { id } });
     setConfirmDelete(null);
     refetch();
   };
 
+  const filteredProjects = data?.getProjects.filter(
+    (item: any) => item.category === category
+  );
+
   return (
     <div className="bg-slate-900 text-white min-h-screen pt-24 px-6 desktop:px-20">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-3xl font-bold mb-10">Work Experience</h1>
+        <h1 className="text-3xl font-bold mb-10">{readableTitle(category)}</h1>
 
         {loading && <p>Loading...</p>}
+        {!loading && filteredProjects?.length === 0 && (
+          <p>No projects found in this category.</p>
+        )}
 
         <div className="space-y-4 mb-6">
-          {data?.getWorkExperiences.map((item: any) => (
-            <div key={item.id} className="group block rounded-lg p-4 transition hover:bg-slate-700 hover:-translate-x-2">
-              <div className="flex items-start gap-6">
-                {/* Date */}
-                <div className="pt-1 w-50 shrink-0 text-sm text-slate-400">
-                  {item.startDate ? formatMonthYear(item.startDate) : 'N/A'} – {item.endDate ? formatMonthYear(item.endDate) : 'Now'}
-                </div>
-
+          {filteredProjects?.map((item: any) => (
+            <div
+              key={item.id}
+              className="group block rounded-lg p-4 transition hover:bg-slate-700 hover:-translate-x-2"
+            >
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:gap-6">
                 <div className="flex-1 space-y-2">
                   <div className="flex flex-wrap justify-between items-start gap-2">
-                    {/* Job Title + Company */}
+                    {/* Title + Link */}
                     <h3 className="text-lg font-bold text-white group-hover:text-cyan-300 transition">
-                      {item.title}{' '}
-                      <span className="text-cyan-300">@ {item.company}</span>
+                      {item.title}
                     </h3>
-                    {/* Buttons Row */}
+
+                    {/* Edit | Delete */}
                     {isLoggedIn && (
-                      <div className="flex gap-3">
+                      <div className="flex gap-3 shrink-0">
                         <button
                           className="text-xs text-yellow-400 hover:underline"
                           onClick={() => {
@@ -76,36 +86,26 @@ export default function ExperiencePage() {
                     )}
                   </div>
 
-                  {/* Contract + Feedback */}
-                  <div className="text-sm text-cyan-400 flex flex-wrap gap-4">
-                    {item.contractFileUrl && (
+                  {/* Project URL */}
+                  {item.projectUrl && (
+                    <div className="text-sm text-cyan-400 flex flex-wrap gap-4">
                       <a
-                        href={item.contractFileUrl}
+                        href={item.projectUrl}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="hover:underline"
                       >
-                        📄 Contract
+                        🔗 Github
                       </a>
-                    )}
-                    {item.feedbackFileUrl && (
-                      <a
-                        href={item.feedbackFileUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="hover:underline"
-                      >
-                        📝 Feedback
-                      </a>
-                    )}
-                  </div>
+                    </div>
+                  )}
 
-                  {/* Description */}
+                  {/* Description bullets */}
                   <div className="text-slate-300 text-sm space-y-1">
                     {item.description
                       .split('-')
                       .filter((line: string) => line.trim())
-                      .map((line: string, idx: Key | null | undefined) => (
+                      .map((line: string, idx: Key) => (
                         <p key={idx}>- {line.trim()}</p>
                       ))}
                   </div>
@@ -113,7 +113,10 @@ export default function ExperiencePage() {
                   {/* Skills */}
                   <div className="flex flex-wrap gap-2">
                     {item.skills.map((tag: string, i: number) => (
-                      <span key={`tag-${i}`} className="bg-teal-400/10 text-teal-300 px-3 py-1 text-xs rounded-full font-medium">
+                      <span
+                        key={`tag-${i}`}
+                        className="bg-teal-400/10 text-teal-300 px-3 py-1 text-xs rounded-full font-medium"
+                      >
                         {tag}
                       </span>
                     ))}
@@ -124,6 +127,7 @@ export default function ExperiencePage() {
           ))}
         </div>
 
+        {/* Add Project Button */}
         {isLoggedIn && (
           <>
             <div className="flex justify-center mt-6">
@@ -134,20 +138,31 @@ export default function ExperiencePage() {
                 }}
                 className="text-cyan-400 hover:underline text-sm"
               >
-                ➕ Add Experience
+                ➕ Add Project
               </button>
             </div>
 
             {showForm && (
-              <div className="fixed inset-0 z-50 bg-black bg-opacity-70 flex justify-center items-center" onClick={() => setShowForm(false)}>
-                <div className="bg-white text-black rounded-lg shadow-xl max-w-2xl w-full p-6" onClick={(e) => e.stopPropagation()}>
+              <div
+                className="fixed inset-0 z-50 bg-black bg-opacity-70 flex justify-center items-center"
+                onClick={() => setShowForm(false)}
+              >
+                <div
+                  className="bg-white text-black rounded-lg shadow-xl max-w-2xl w-full p-6"
+                  onClick={(e) => e.stopPropagation()}
+                >
                   <div className="flex justify-between items-center mb-4">
-                    <h2 className="text-xl font-semibold">{editItem ? 'Edit' : 'Add'} Work Experience</h2>
-                    <button onClick={() => setShowForm(false)} className="text-gray-500 hover:text-red-600 text-lg font-bold">
+                    <h2 className="text-xl font-semibold">
+                      {editItem ? 'Edit' : 'Add'} Project
+                    </h2>
+                    <button
+                      onClick={() => setShowForm(false)}
+                      className="text-gray-500 hover:text-red-600 text-lg font-bold"
+                    >
                       &times;
                     </button>
                   </div>
-                  <WorkExperienceForm
+                  <ProjectForm
                     isOpen={true}
                     onClose={() => setShowForm(false)}
                     onSuccess={() => {
@@ -162,13 +177,24 @@ export default function ExperiencePage() {
           </>
         )}
 
+        {/* Delete Confirm Modal */}
         {confirmDelete && (
           <div className="fixed inset-0 z-50 bg-black bg-opacity-70 flex justify-center items-center">
             <div className="bg-white text-black rounded-lg shadow-lg p-6">
-              <p className="mb-4">Are you sure you want to delete this experience?</p>
+              <p className="mb-4">Are you sure you want to delete this project?</p>
               <div className="flex justify-end gap-4">
-                <button onClick={() => setConfirmDelete(null)} className="text-gray-600 hover:underline">No</button>
-                <button onClick={() => handleDelete(confirmDelete)} className="text-red-600 hover:underline">Yes</button>
+                <button
+                  onClick={() => setConfirmDelete(null)}
+                  className="text-gray-600 hover:underline"
+                >
+                  No
+                </button>
+                <button
+                  onClick={() => handleDelete(confirmDelete)}
+                  className="text-red-600 hover:underline"
+                >
+                  Yes
+                </button>
               </div>
             </div>
           </div>
