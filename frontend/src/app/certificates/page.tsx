@@ -35,25 +35,55 @@ export default function Certificates() {
             const fileUrls = Array.isArray(item.certificateFileUrl) ? item.certificateFileUrl : [item.certificateFileUrl];
 
             const dateDisplay = item.dateAchieved
-            ? new Date(Number(item.dateAchieved)).toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-              })
-            : 'No date';
+              ? new Date(Number(item.dateAchieved)).toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'long',
+                })
+              : 'No date';
 
             return (
-              <div key={item.id} className="group block rounded-lg p-4 transition hover:bg-slate-700 hover:-translate-x-2 relative">
+              <div key={item.id} className="group block rounded-lg p-4 transition hover:bg-slate-700 hover:-translate-x-2">
                 <div className="flex items-start gap-6">
                   <div className="pt-1 w-48 shrink-0 text-sm text-slate-400">
                     {dateDisplay}
                   </div>
-                  <div className="flex-1">
-                    <h3 className="text-lg font-bold text-white group-hover:text-cyan-300 transition">
-                      {item.title}{' '}
-                      <span className="text-cyan-300">@ {item.organization}</span>
-                    </h3>
-                    <p className="text-slate-300 text-sm mt-2">{item.description}</p>
-                    <div className="flex flex-wrap gap-2 mt-2">
+                  <div className="flex-1 space-y-2">
+                    <div className="flex flex-wrap justify-between items-start gap-2">
+                      <h3 className="text-lg font-bold text-white group-hover:text-cyan-300 transition">
+                        {item.title}{' '}
+                        <span className="text-cyan-300">@ {item.organization}</span>
+                      </h3>
+                      {isLoggedIn && (
+                        <div className="flex gap-3">
+                          <button
+                            className="text-xs text-yellow-400 hover:underline"
+                            onClick={() => {
+                              setEditItem(item);
+                              setShowForm(true);
+                            }}
+                          >
+                            Edit
+                          </button>
+                          <button
+                            className="text-xs text-red-400 hover:underline"
+                            onClick={() => setConfirmDelete(item.id)}
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="text-slate-300 text-sm space-y-1">
+                      {item.description
+                        .split('-')
+                        .filter((line: string) => line.trim())
+                        .map((line: string, idx: number) => (
+                          <p key={idx}>- {line.trim()}</p>
+                        ))}
+                    </div>
+
+                    <div className="flex flex-wrap gap-2">
                       {item.skills.map((tag: string, i: number) => (
                         <span key={`tag-${i}`} className="bg-teal-400/10 text-teal-300 px-3 py-1 text-xs rounded-full font-medium">
                           {tag}
@@ -94,15 +124,6 @@ export default function Certificates() {
                     </div>
                   </div>
                 </div>
-                {isLoggedIn && (
-                  <div className="absolute top-4 right-4 flex gap-2">
-                    <button className="text-xs text-yellow-400 hover:underline" onClick={() => {
-                      setEditItem(item);
-                      setShowForm(true);
-                    }}>Edit</button>
-                    <button className="text-xs text-red-400 hover:underline" onClick={() => setConfirmDelete(item.id)}>Delete</button>
-                  </div>
-                )}
               </div>
             );
           })}
