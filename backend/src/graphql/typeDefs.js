@@ -119,7 +119,7 @@ export const typeDefs = gql`
     login(username: String!, password: String!): AuthPayload!
 
     singleUpload(file: Upload!): String!
-    multiUpload(input: [Upload!]!): [String!]!
+    multiUpload(files: [Upload!]!): [String!]!
 
     singleDelete(fileUrl: String!): Boolean!
 
