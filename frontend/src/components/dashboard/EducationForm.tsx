@@ -70,7 +70,7 @@ export default function EducationForm({ isOpen, onClose, onSuccess, initialData 
         }
 
         // 📤 Upload new file
-        const res = await uploadFile({ variables: { input: { file } } });
+        const res = await uploadFile({ variables: { file } });
         uploadedUrl = res?.data?.singleUpload;
       }
 
