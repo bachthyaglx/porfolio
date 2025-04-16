@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { createToken } from '../auth/jwt.js';
 import { requireAuth } from '../utils/requireAuth.js';
 import { PrismaClient } from '@prisma/client';
-import { GraphQLUpload } from 'graphql-upload-minimal';
+import { GraphQLUpload } from '../shims/graphql-upload.js';
 import { listFilesFromS3, uploadFileToS3, deleteFileFromS3 } from '../s3/s3Service.js';
 import redis from '../utils/redis.js';
 
@@ -130,25 +130,25 @@ export const resolvers = {
       return { token: accessToken, user };
     },
     
-    singleUpload: async (_, { input: { file } }, context) => {
+    singleUpload: async (_, { file }, context) => {
       requireAuth(context.userId);
-    
+
+      console.log('📥 singleUpload received file:', file);
       try {
-        console.log('📤 Uploading file to AWS S3:', file?.filename);
         const url = await uploadFileToS3(context.userId, file);
         return url;
-      } catch(err) {
+      } catch (err) {
         console.error('❌ Error uploading file:', err);
         throw new Error('Failed to upload file: ' + err.message);
       }
     },
-
-    multiUpload: async (_, { input }, context) => {
+    
+    multiUpload: async (_, { files }, context) => {
       requireAuth(context.userId);
     
       try {
         const urls = await Promise.all(
-          input.map((file) => uploadFileToS3(context.userId, file))
+          files.map((file) => uploadFileToS3(context.userId, file))
         );
         return urls;
       } catch (err) {

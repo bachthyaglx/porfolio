@@ -1,15 +1,13 @@
 // src/s3/s3Service.js
 import {
   S3Client,
-  PutObjectCommand,
   DeleteObjectCommand,
   ListObjectsV2Command,
   GetObjectCommand,
 } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
-import dotenv from 'dotenv';
-
-dotenv.config();
+import { PutObjectCommand } from '@aws-sdk/client-s3';
+import { buffer } from 'stream/consumers';
 
 const s3 = new S3Client({
   region: process.env.AWS_REGION,
@@ -17,6 +15,8 @@ const s3 = new S3Client({
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
   },
+  // ✅ DISABLE checksums and expect buffering
+  forcePathStyle: false,
 });
 
 // ✅ List files from AWS S3 with signed URLs
@@ -52,18 +52,27 @@ export const listFilesFromS3 = async (userId) => {
 // ✅ Upload a file to AWS S3
 export const uploadFileToS3 = async (userId, filePromise) => {
   const { createReadStream, filename, mimetype } = await filePromise;
-  const stream = createReadStream();
 
-  const key = `${userId}/${filename}`;
+  if (!createReadStream || typeof createReadStream !== 'function') {
+    throw new Error('createReadStream is missing or not a function');
+  }
+
+  const stream = createReadStream();
+  const fileBuffer = await buffer(stream);
+
+  const key = filename;
 
   const uploadCommand = new PutObjectCommand({
     Bucket: process.env.AWS_S3_BUCKET_NAME,
     Key: key,
-    Body: stream,
+    Body: fileBuffer,
     ContentType: mimetype,
+    ContentLength: fileBuffer.length,
   });
 
-  await s3.send(uploadCommand);
+  await s3.send(uploadCommand, {
+    requestChecksumRequired: false, // ✅ Disable checksum enforcement
+  });
 
   return `https://${process.env.AWS_S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${key}`;
 };

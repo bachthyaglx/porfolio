@@ -14,9 +14,9 @@ export const typeDefs = gql`
     username: String!
   }
 
-  input SingleFileInput {
-    file: Upload!
-  }
+  # input SingleFileInput {
+  #   file: Upload!
+  # }
   
   input CreateWorkExperienceInput {
     title: String!
@@ -54,6 +54,7 @@ export const typeDefs = gql`
     title: String!
     skills: [String!]!
     description: String!
+    category: String
     projectUrl: String!
   }
 
@@ -100,6 +101,7 @@ export const typeDefs = gql`
     skills: [String!]!
     description: String!
     projectUrl: String!
+    category: String
     createdAt: String!
   }
 
@@ -116,7 +118,7 @@ export const typeDefs = gql`
     signup(username: String!, password: String!): AuthPayload!
     login(username: String!, password: String!): AuthPayload!
 
-    singleUpload(input: SingleFileInput!): String!
+    singleUpload(file: Upload!): String!
     multiUpload(input: [Upload!]!): [String!]!
 
     singleDelete(fileUrl: String!): Boolean!

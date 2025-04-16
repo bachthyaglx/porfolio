@@ -75,6 +75,7 @@ model Project {
   title       String
   skills      String[]
   description String
+  category    String
   projectUrl  String
   createdAt   DateTime @default(now())
   user        User     @relation(fields: [userId], references: [id])
