@@ -143,12 +143,12 @@ export const resolvers = {
       }
     },
     
-    multiUpload: async (_, { files }, context) => {
+    multiUpload: async (_, { input }, context) => {
       requireAuth(context.userId);
     
       try {
         const urls = await Promise.all(
-          files.map((file) => uploadFileToS3(context.userId, file))
+          input.map((file) => uploadFileToS3(context.userId, file))
         );
         return urls;
       } catch (err) {
