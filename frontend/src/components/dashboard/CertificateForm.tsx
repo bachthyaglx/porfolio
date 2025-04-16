@@ -85,7 +85,7 @@ export default function CertificateForm({ isOpen, onClose, onSuccess, initialDat
       }
 
       if (certificateFiles.length) {
-        const res = await multiUpload({ variables: { input: certificateFiles } });
+        const res = await multiUpload({ variables: { files: certificateFiles } });
         uploadedUrls = [...uploadedUrls, ...(res?.data?.multiUpload || [])];
       }
 

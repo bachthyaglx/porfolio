@@ -78,8 +78,8 @@ export const SINGLE_UPLOAD = gql`
 `;
 
 export const MULTI_UPLOAD = gql`
-  mutation MultiUpload($input: [Upload!]!) {
-    multiUpload(input: $input)
+  mutation MultiUpload($files: [Upload!]!) {
+    multiUpload(files: $files)
   }
 `;
 
