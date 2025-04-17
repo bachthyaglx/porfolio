@@ -31,6 +31,10 @@ export default function Education() {
       : date.toLocaleDateString('en-US', { year: 'numeric', month: 'short' });
   };
 
+  const sortedEducations = [...(data?.getEducations || [])].sort(
+    (a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime()
+  );
+
   return (
     <div className="bg-slate-900 text-white min-h-screen pt-24 px-6 desktop:px-20">
       <div className="max-w-7xl mx-auto">
@@ -39,7 +43,7 @@ export default function Education() {
         {loading && <p>Loading...</p>}
 
         <div className="space-y-4 mb-6">
-          {data?.getEducations.map((edu: any) => {
+          {sortedEducations.map((edu: any) => {
             const start = formatMonthYear(edu.startDate);
             const end = edu.endDate ? formatMonthYear(edu.endDate) : 'Present';
 
@@ -66,14 +70,14 @@ export default function Education() {
                         <div className="text-sm text-cyan-300 flex flex-wrap gap-4 items-center">
                           <p>{edu.program}</p>
                           {edu.degreeUrl && (
-                            <div>📝 {' '}
+                            <div>📄{' '}
                               <a
                                 href={edu.degreeUrl}
                                 target="_blank"
                                 rel="noreferrer"
                                 className="text-cyan-400 hover:underline"
                               >
-                                View Degree
+                                Degree
                               </a>
                             </div>
                           )}
