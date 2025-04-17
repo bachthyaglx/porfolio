@@ -87,10 +87,10 @@ export const typeDefs = gql`
     degree: String!
     program: String!
     school: String!
-    startDate: String!
-    endDate: String!
     skills: [String!]!
     description: String!
+    startDate: String!
+    endDate: String!
     degreeUrl: String!
     createdAt: String!
   }

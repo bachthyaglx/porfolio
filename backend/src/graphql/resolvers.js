@@ -87,7 +87,7 @@ export const resolvers = {
 
     getEducations: async () => {
       const cacheKey = 'educations';
-    
+
       const cached = await redis.get(cacheKey);
       if (cached) {
         console.log(`🧠 Redis cache hit: ${cacheKey}`);
@@ -142,7 +142,7 @@ export const resolvers = {
         throw new Error('Failed to upload file: ' + err.message);
       }
     },
-    
+
     multiUpload: async (_, { files }, context) => {
       requireAuth(context.userId);
     
@@ -239,7 +239,7 @@ export const resolvers = {
         });
 
         // 🧹 Clear cache after creating a new entry
-        await redis.del('education');
+        await redis.del('educations');
 
         return education;
       } catch (err) {
