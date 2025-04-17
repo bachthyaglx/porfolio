@@ -80,7 +80,7 @@ export default function ExperiencePage() {
                   <div className="text-sm text-cyan-400 flex flex-wrap gap-4">
                     {item.contractFileUrl && (
                       <div className="text-sm text-center">
-                        📄 <a href={item.contractFileUrl} target="_blank" rel="noreferrer" className="text-cyan-400 hover:underline">Contract</a>
+                        📝 <a href={item.contractFileUrl} target="_blank" rel="noreferrer" className="text-cyan-400 hover:underline">Contract</a>
                       </div>
                     )}
                     {item.feedbackFileUrl && (

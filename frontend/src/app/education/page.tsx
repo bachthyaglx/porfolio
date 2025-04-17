@@ -70,14 +70,14 @@ export default function Education() {
                         <div className="text-sm text-cyan-300 flex flex-wrap gap-4 items-center">
                           <p>{edu.program}</p>
                           {edu.degreeUrl && (
-                            <div>📄{' '}
+                            <div>📝{' '}
                               <a
                                 href={edu.degreeUrl}
                                 target="_blank"
                                 rel="noreferrer"
                                 className="text-cyan-400 hover:underline"
                               >
-                                Degree
+                                View Degree
                               </a>
                             </div>
                           )}
