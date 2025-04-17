@@ -9,7 +9,9 @@ import WorkExperienceForm from '@/components/dashboard/WorkExperienceForm';
 import LoginModal from '@/components/auth/LoginModal';
 
 export default function ExperiencePage() {
-  const { data, loading, refetch } = useQuery(GET_WORK_EXPERIENCES);
+  const { data, loading, refetch } = useQuery(GET_WORK_EXPERIENCES, {
+    fetchPolicy: 'cache-and-network',
+  });
   const [deleteWork] = useMutation(DELETE_WORK_EXPERIENCE);
   const isLoggedIn = useIsLoggedIn();
   const [showForm, setShowForm] = useState(false);

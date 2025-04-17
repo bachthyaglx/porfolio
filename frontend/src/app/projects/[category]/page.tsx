@@ -11,7 +11,9 @@ import ProjectForm from '@/components/dashboard/ProjectForm';
 
 export default function ProjectsByCategoryPage() {
   const { category } = useParams();
-  const { data, loading, refetch } = useQuery(GET_PROJECTS);
+  const { data, loading, refetch } = useQuery(GET_PROJECTS, {
+    fetchPolicy: 'cache-and-network',
+  });
   const [deleteProject] = useMutation(DELETE_PROJECT);
   const isLoggedIn = useIsLoggedIn();
 

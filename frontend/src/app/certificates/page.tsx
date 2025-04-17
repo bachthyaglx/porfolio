@@ -9,7 +9,9 @@ import CertificateForm from '@/components/dashboard/CertificateForm';
 import LoginModal from '@/components/auth/LoginModal';
 
 export default function Certificates() {
-  const { data, loading, refetch } = useQuery(GET_CERTIFICATES);
+  const { data, loading, refetch } = useQuery(GET_CERTIFICATES, {
+    fetchPolicy: 'cache-and-network',
+  });
   const [deleteCertificate] = useMutation(DELETE_CERTIFICATE);
   const isLoggedIn = useIsLoggedIn();
   const [showForm, setShowForm] = useState(false);

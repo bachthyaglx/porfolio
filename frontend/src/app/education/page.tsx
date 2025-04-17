@@ -9,7 +9,9 @@ import EducationForm from '@/components/dashboard/EducationForm';
 import LoginModal from '@/components/auth/LoginModal';
 
 export default function Education() {
-  const { data, loading, refetch } = useQuery(GET_EDUCATIONS);
+  const { data, loading, refetch } = useQuery(GET_EDUCATIONS, {
+    fetchPolicy: 'cache-and-network',
+  });
   const [deleteEducation] = useMutation(DELETE_EDUCATION);
   const isLoggedIn = useIsLoggedIn();
   const [showForm, setShowForm] = useState(false);
