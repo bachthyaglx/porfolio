@@ -23,6 +23,19 @@ export default function Certificates() {
     refetch();
   };
 
+  const formatMonthYear = (timestamp: string | number | null | undefined) => {
+    if (!timestamp) return 'N/A';
+  
+    const parsed =
+      typeof timestamp === 'string' ? Date.parse(timestamp) : Number(timestamp);
+  
+    const date = new Date(parsed);
+  
+    return isNaN(date.getTime())
+      ? 'Invalid Date'
+      : date.toLocaleDateString('en-US', { year: 'numeric', month: 'short' });
+  };
+
   return (
     <div className="bg-slate-900 text-white min-h-screen pt-24 px-6 desktop:px-20">
       <div className="max-w-7xl mx-auto">
@@ -31,22 +44,21 @@ export default function Certificates() {
         {loading && <p>Loading...</p>}
 
         <div className="space-y-4 mb-6">
-          {data?.getCertificates.map((item: any) => {
-            const fileUrls = Array.isArray(item.certificateFileUrl) ? item.certificateFileUrl : [item.certificateFileUrl];
-
-            const dateDisplay =
-            item.dateAchieved && !isNaN(new Date(item.dateAchieved).getTime())
-              ? new Date(item.dateAchieved).toLocaleDateString('en-US', {
-                  year: 'numeric',
-                  month: 'long',
-                })
-              : 'No date';          
+          {[...(data?.getCertificates || [])]
+            .sort((a, b) => {
+              const dateA = new Date(a.dateAchieved).getTime();
+              const dateB = new Date(b.dateAchieved).getTime();
+              return dateB - dateA; // latest on top
+            })
+            .map((item: any) => {
+            
+            const fileUrls = Array.isArray(item.certificateFileUrl) ? item.certificateFileUrl : [item.certificateFileUrl];       
 
             return (
               <div key={item.id} className="group block rounded-lg p-4 transition hover:bg-slate-700 hover:-translate-x-2">
                 <div className="flex items-start gap-6">
                   <div className="pt-1 w-48 shrink-0 text-sm text-slate-400">
-                    {dateDisplay}
+                    {formatMonthYear(item.dateAchieved)}
                   </div>
                   <div className="flex-1 space-y-2">
                     <div className="flex flex-wrap justify-between items-start gap-2">
