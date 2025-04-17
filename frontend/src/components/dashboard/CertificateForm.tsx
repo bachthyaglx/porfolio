@@ -38,21 +38,22 @@ export default function CertificateForm({ isOpen, onClose, onSuccess, initialDat
 
   useEffect(() => {
     if (initialData) {
-      let formattedDate = '';
-      try {
-        const dateNum = Number(initialData.dateAchieved);
-        if (!isNaN(dateNum)) {
-          formattedDate = new Date(dateNum).toISOString().split('T')[0];
-        }
-      } catch (err) {
-        console.error('⚠️ Invalid dateAchieved:', initialData.dateAchieved);
-      }
+      const safeDate = (value: any) => {
+        if (!value) return '';
+      
+        const date = typeof value === 'number' || !isNaN(Number(value))
+          ? new Date(Number(value))
+          : new Date(value);
+      
+        return isNaN(date.getTime()) ? '' : date.toISOString().split('T')[0];
+      };
+
       setForm({
         title: initialData.title || '',
         organization: initialData.organization || '',
         skills: (initialData.skills || []).join(', '),
         description: initialData.description || '',
-        dateAchieved: formattedDate,
+        dateAchieved: safeDate(initialData.dateAchieved),
       });
       setCertificateFileUrls(
         Array.isArray(initialData.certificateFileUrl)

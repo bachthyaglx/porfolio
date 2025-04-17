@@ -34,12 +34,13 @@ export default function Certificates() {
           {data?.getCertificates.map((item: any) => {
             const fileUrls = Array.isArray(item.certificateFileUrl) ? item.certificateFileUrl : [item.certificateFileUrl];
 
-            const dateDisplay = item.dateAchieved
-              ? new Date(Number(item.dateAchieved)).toLocaleDateString('en-US', {
+            const dateDisplay =
+            item.dateAchieved && !isNaN(new Date(item.dateAchieved).getTime())
+              ? new Date(item.dateAchieved).toLocaleDateString('en-US', {
                   year: 'numeric',
                   month: 'long',
                 })
-              : 'No date';
+              : 'No date';          
 
             return (
               <div key={item.id} className="group block rounded-lg p-4 transition hover:bg-slate-700 hover:-translate-x-2">

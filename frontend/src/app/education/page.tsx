@@ -1,3 +1,4 @@
+// src/app/education/page.tsx
 'use client';
 
 import { useMutation, useQuery } from '@apollo/client';
@@ -22,112 +23,109 @@ export default function Education() {
     refetch();
   };
 
+  const formatMonthYear = (timestamp: string | number | null | undefined) => {
+    if (!timestamp) return 'N/A';
+    const date = new Date(timestamp);
+    return isNaN(date.getTime())
+      ? 'Invalid Date'
+      : date.toLocaleDateString('en-US', { year: 'numeric', month: 'short' });
+  };
+
   return (
-    <section className="bg-slate-900 text-white min-h-screen pt-24 px-6 desktop:px-20">
+    <div className="bg-slate-900 text-white min-h-screen pt-24 px-6 desktop:px-20">
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-3xl font-bold mb-10">Educations</h2>
+        <h1 className="text-3xl font-bold mb-10">Educations</h1>
 
         {loading && <p>Loading...</p>}
 
-        <div className="space-y-6 mb-6">
+        <div className="space-y-4 mb-6">
           {data?.getEducations.map((edu: any) => {
-            const start = edu.startDate
-              ? new Date(Number(edu.startDate)).toLocaleDateString('en-US', {
-                  year: 'numeric',
-                  month: 'short',
-                })
-              : 'Invalid';
-            const end = edu.endDate
-              ? new Date(Number(edu.endDate)).toLocaleDateString('en-US', {
-                  year: 'numeric',
-                  month: 'short',
-                })
-              : 'Present';
+            const start = formatMonthYear(edu.startDate);
+            const end = edu.endDate ? formatMonthYear(edu.endDate) : 'Present';
 
             return (
               <div
                 key={edu.id}
-                className="relative group grid grid-cols-[160px_1fr] items-start gap-6 p-6 rounded-lg transition hover:bg-slate-700 hover:-translate-x-2 border-slate-700"
+                className="group block rounded-lg p-4 transition hover:bg-slate-700 hover:-translate-x-2"
               >
-                {/* Edit/Delete buttons */}
-                {isLoggedIn && (
-                  <div className="absolute top-4 right-4 flex gap-3 z-10">
-                    <button
-                      className="text-xs text-yellow-400 hover:underline"
-                      onClick={() => {
-                        setEditItem(edu);
-                        setShowForm(true);
-                      }}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className="text-xs text-red-400 hover:underline"
-                      onClick={() => setConfirmDelete(edu.id)}
-                    >
-                      Delete
-                    </button>
-                  </div>
-                )}
-
-                {/* Time column */}
-                <div className="text-sm text-gray-400">
-                  <span className="block">{start} – {end}</span>
-                </div>
-
-                {/* Main content */}
-                <div className="space-y-2">
-                  <div className="space-y-1">
-                    <h3 className="text-lg font-bold text-white group-hover:text-cyan-300 transition">
-                      {edu.degree}{' '}
-                      <span className="text-cyan-300">@ {edu.school}</span>
-                    </h3>
-                    <p className="text-cyan-300 text-sm">{edu.program}</p>
+                <div className="flex items-start gap-6">
+                  {/* Date */}
+                  <div className="pt-1 w-50 shrink-0 text-sm text-slate-400">
+                    {start} – {end}
                   </div>
 
-                  <p className="text-gray-300 text-sm">{edu.description}</p>
+                  <div className="flex-1 space-y-2">
+                    <div className="flex flex-wrap justify-between items-start gap-2">
+                      {/* Degree + School */}
+                      <div>
+                        <h3 className="text-lg font-bold text-white group-hover:text-cyan-300 transition">
+                          {edu.degree}{' '}
+                          <span className="text-cyan-300">@ {edu.school}</span>
+                        </h3>
 
-                  <div className="flex flex-wrap gap-2 mt-2 max-w-full">
-                    {edu.skills?.map((tag: string, i: number) => (
-                      <span
-                        key={`tag-${i}`}
-                        className="bg-teal-400/10 text-teal-300 px-3 py-1 text-xs rounded-full font-medium"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
+                        <div className="text-sm text-cyan-300 flex flex-wrap gap-4 items-center">
+                          <p>{edu.program}</p>
+                          {edu.degreeUrl && (
+                            <div>📝 {' '}
+                              <a
+                                href={edu.degreeUrl}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="text-cyan-400 hover:underline"
+                              >
+                                View Degree
+                              </a>
+                            </div>
+                          )}
+                        </div>
+                      </div>
 
-                  {edu.degreeUrl && (
-                    <div className="mt-4">
-                      <a
-                        href={edu.degreeUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="block w-full max-w-xs rounded border overflow-hidden group hover:shadow-lg"
-                      >
-                        {edu.degreeUrl.match(/\.(pdf|docx?|pptx?)$/i) ? (
-                          <div className="relative h-96 w-full rounded overflow-hidden">
-                            <iframe
-                              src={`https://docs.google.com/viewer?url=${encodeURIComponent(
-                                edu.degreeUrl
-                              )}&embedded=true`}
-                              className="absolute top-0 left-0 w-full h-full"
-                              style={{ border: 'none' }}
-                              allowFullScreen
-                              title="Document Preview"
-                            />
-                          </div>
-                        ) : (
-                          <img
-                            src={edu.degreeUrl}
-                            alt="Degree Preview"
-                            className="w-full h-auto object-contain group-hover:scale-105 transition-transform duration-200"
-                          />
-                        )}
-                      </a>
+                      {/* Edit/Delete Buttons */}
+                      {isLoggedIn && (
+                        <div className="flex gap-3">
+                          <button
+                            className="text-xs text-yellow-400 hover:underline"
+                            onClick={() => {
+                              setEditItem(edu);
+                              setShowForm(true);
+                            }}
+                          >
+                            Edit
+                          </button>
+                          <button
+                            className="text-xs text-red-400 hover:underline"
+                            onClick={() => setConfirmDelete(edu.id)}
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      )}
                     </div>
-                  )}
+
+                    {/* Description */}
+                    <div className="text-slate-300 text-sm space-y-1">
+                      {edu.description
+                        .split('\n')
+                        .filter((line: string) => line.trim())
+                        .map((line: string, idx: number) => (
+                          <p key={idx} className={idx === 0 ? '' : 'pl-2'}>
+                            {line.trim()}
+                          </p>
+                        ))}
+                    </div>
+
+                    {/* Skills */}
+                    <div className="flex flex-wrap gap-2 mt-2 max-w-full">
+                      {edu.skills?.map((tag: string, i: number) => (
+                        <span
+                          key={`tag-${i}`}
+                          className="bg-teal-400/10 text-teal-300 px-3 py-1 text-xs rounded-full font-medium"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </div>
             );
@@ -147,6 +145,7 @@ export default function Education() {
                 ➕ Add Education
               </button>
             </div>
+
             {showForm && (
               <div
                 className="fixed inset-0 z-50 bg-black bg-opacity-70 flex justify-center items-center"
@@ -210,6 +209,6 @@ export default function Education() {
           onLoginSuccess={() => setShowLoginModal(false)}
         />
       </div>
-    </section>
+    </div>
   );
 }

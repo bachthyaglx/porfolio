@@ -47,7 +47,7 @@ export const GET_CERTIFICATES = gql`
 `;
 
 export const GET_EDUCATIONS = gql`
-  query {
+  query GetEducations{
     getEducations {
       id
       degree

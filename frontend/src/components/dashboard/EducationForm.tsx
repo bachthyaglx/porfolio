@@ -34,11 +34,16 @@ export default function EducationForm({ isOpen, onClose, onSuccess, initialData 
 
   useEffect(() => {
     if (initialData) {
-      const safeDate = (value: any) =>
-        typeof value === 'string' || typeof value === 'number'
-          ? new Date(+value).toISOString().split('T')[0]
-          : '';
-
+      const safeDate = (value: any) => {
+        if (!value) return '';
+      
+        const date = typeof value === 'number' || !isNaN(Number(value))
+          ? new Date(Number(value))
+          : new Date(value);
+      
+        return isNaN(date.getTime()) ? '' : date.toISOString().split('T')[0];
+      };
+      
       setForm({
         degree: initialData.degree || '',
         program: initialData.program || '',
@@ -46,9 +51,9 @@ export default function EducationForm({ isOpen, onClose, onSuccess, initialData 
         skills: (initialData.skills || []).join(', '),
         description: initialData.description || '',
         startDate: safeDate(initialData.startDate),
-        endDate: initialData.endDate ? safeDate(initialData.endDate) : '',
+        endDate: safeDate(initialData.endDate),
       });
-
+      
       setDegreeUrl(initialData.degreeUrl || null);
     }
   }, [initialData]);

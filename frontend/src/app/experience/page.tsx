@@ -79,24 +79,14 @@ export default function ExperiencePage() {
                   {/* Contract + Feedback */}
                   <div className="text-sm text-cyan-400 flex flex-wrap gap-4">
                     {item.contractFileUrl && (
-                      <a
-                        href={item.contractFileUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="hover:underline"
-                      >
-                        📄 Contract
-                      </a>
+                      <div className="text-sm text-center">
+                        📄 <a href={item.contractFileUrl} target="_blank" rel="noreferrer" className="text-cyan-400 hover:underline">Contract</a>
+                      </div>
                     )}
                     {item.feedbackFileUrl && (
-                      <a
-                        href={item.feedbackFileUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="hover:underline"
-                      >
-                        📝 Feedback
-                      </a>
+                      <div className="text-sm text-center">
+                        📝 <a href={item.feedbackFileUrl} target="_blank" rel="noreferrer" className="text-cyan-400 hover:underline">Reference Letter</a>
+                      </div>
                     )}
                   </div>
 
