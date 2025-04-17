@@ -24,15 +24,11 @@ body {
   .text-balance {
     text-wrap: balance;
   }
-
-  embed::-webkit-scrollbar,
-  iframe::-webkit-scrollbar {
-    display: none;
+  .text-balance-all {
+    text-wrap: balance-all;
   }
-  embed,
-  iframe {
-    scrollbar-width: none;       /* Firefox */
-    -ms-overflow-style: none;    /* IE 10+ */
+  .text-clip {
+    text-wrap: clip;
   }
 }
 

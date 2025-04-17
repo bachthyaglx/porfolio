@@ -30,7 +30,6 @@ export default function ExperiencePage() {
       : date.toLocaleDateString('en-US', { year: 'numeric', month: 'short' });
   };
   
-
   const handleDelete = async (id: string) => {
     await deleteWork({ variables: { id } });
     setConfirmDelete(null);

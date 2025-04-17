@@ -83,7 +83,7 @@ export default function Education() {
                                 rel="noreferrer"
                                 className="text-cyan-400 hover:underline"
                               >
-                                View Degree
+                                Degree
                               </a>
                             </div>
                           )}
