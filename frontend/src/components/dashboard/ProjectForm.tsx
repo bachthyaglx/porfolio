@@ -96,7 +96,7 @@ export default function ProjectForm({ isOpen, onClose, onSuccess, initialData }:
         name="category"
         value={form.category}
         onChange={handleChange}
-        className="w-full border px-4 py-2 rounded text-black"
+        className="w-full border px-4 py-2 rounded text-black min-h-[200px]"
         required
       >
         <option value="" disabled>Select project</option>

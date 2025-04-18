@@ -1,6 +1,7 @@
 // src/app/projects/[category]/page.tsx
 'use client';
 
+import React from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 import { GET_PROJECTS, DELETE_PROJECT } from '@/graphql';
 import { useParams } from 'next/navigation';
@@ -47,7 +48,8 @@ export default function ProjectsByCategoryPage() {
       <div className="max-w-7xl mx-auto">
         <h1 className="text-3xl font-bold mb-10 pl-4">{readableTitle(category)}</h1>
 
-        {loading && <p>Loading...</p>}
+        {loading && <p className="pl-4">Loading...</p>}
+
         {!loading && filteredProjects?.length === 0 && (
           <p>No projects found in this category.</p>
         )}
@@ -58,71 +60,68 @@ export default function ProjectsByCategoryPage() {
               key={item.id}
               className="group block rounded-lg p-4 transition hover:bg-slate-700 hover:-translate-x-2"
             >
-              <div className="flex items-start gap-6 flex-wrap">
-                <div className="flex-1 space-y-2">
-                  <div className="flex flex-wrap justify-between items-start gap-2">
-                    {/* Title + Link */}
-                    <h3 className="text-lg font-bold text-white group-hover:text-cyan-300 transition">
-                      {item.title}
-                    </h3>
+              <div className="flex-1 w-full min-w-0 space-y-2">
+                <div className="flex flex-wrap justify-between items-start gap-2">
+                  {/* Title + Link */}
+                  <h3 className="text-lg font-bold text-white group-hover:text-cyan-300 transition">
+                    {item.title}
+                  </h3>
 
-                    {/* Edit | Delete */}
-                    {isLoggedIn && (
-                      <div className="flex gap-3">
-                        <button
-                          className="text-xs text-yellow-400 hover:underline"
-                          onClick={() => {
-                            setEditItem(item);
-                            setShowForm(true);
-                          }}
-                        >
-                          Edit
-                        </button>
-                        <button
-                          className="text-xs text-red-400 hover:underline"
-                          onClick={() => setConfirmDelete(item.id)}
-                        >
-                          Delete
-                        </button>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Project URL */}
-                  {item.projectUrl && (
-                    <div className="text-sm text-cyan-400 flex flex-wrap gap-4">
-                      <a
-                        href={item.projectUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="hover:underline"
+                  {/* Edit | Delete */}
+                  {isLoggedIn && (
+                    <div className="flex gap-3">
+                      <button
+                        className="text-xs text-yellow-400 hover:underline"
+                        onClick={() => {
+                          setEditItem(item);
+                          setShowForm(true);
+                        }}
                       >
-                        🔗 Github
-                      </a>
+                        Edit
+                      </button>
+                      <button
+                        className="text-xs text-red-400 hover:underline"
+                        onClick={() => setConfirmDelete(item.id)}
+                      >
+                        Delete
+                      </button>
                     </div>
                   )}
+                </div>
 
-                  {/* Description bullets */}
-                  <div className="text-slate-300 text-sm space-y-1">
-                    {item.description
-                      .split('-')
-                      .filter((line: string) => line.trim())
-                      .map((line: string, idx: Key) => (
-                        <p key={idx}>- {line.trim()}</p>
-                      ))}
+                {/* Project URL */}
+                {item.projectUrl && (
+                  <div className="text-sm text-cyan-400 flex flex-wrap gap-4">
+                    <a
+                      href={item.projectUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:underline"
+                    >
+                      🔗 Github
+                    </a>
                   </div>
+                )}
 
-                  {/* Skills */}
-                  <div className="flex flex-wrap gap-2">
-                    {item.skills.map((tag: string, i: number) => (
-                      <span
-                        key={`tag-${i}`}
-                        className="bg-teal-400/10 text-teal-300 px-3 py-1 text-xs rounded-full font-medium"
-                      >
-                        {tag}
-                      </span>
+                {/* Description */}
+                <div className="text-slate-300 text-sm space-y-1">
+                  {item.description
+                    .split(/(?<=\.)\s+(?=-)/g) // split after "." and before "-"
+                    .map((line: string, idx: number) => (
+                      <p key={idx}>{line.trim()}</p>
                     ))}
-                  </div>
+                </div>
+
+                {/* Skills */}
+                <div className="flex flex-wrap gap-2">
+                  {item.skills.map((tag: string, i: number) => (
+                    <span
+                      key={`tag-${i}`}
+                      className="bg-teal-400/10 text-teal-300 px-3 py-1 text-xs rounded-full font-medium"
+                    >
+                      {tag}
+                    </span>
+                  ))}
                 </div>
               </div>
             </div>

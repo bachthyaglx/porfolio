@@ -112,26 +112,33 @@ export default function EducationForm({ isOpen, onClose, onSuccess, initialData 
       <input name="program" value={form.program} onChange={handleChange} className="w-full border px-3 py-2 rounded text-black" placeholder="Program" required />
       <input name="school" value={form.school} onChange={handleChange} className="w-full border px-3 py-2 rounded text-black" placeholder="School" required />
       <input name="skills" value={form.skills} onChange={handleChange} className="w-full border px-3 py-2 rounded text-black" placeholder="Skills (comma separated)" />
-      <textarea name="description" value={form.description} onChange={handleChange} className="w-full border px-3 py-2 rounded text-black" placeholder="Description" required />
+      <textarea name="description" value={form.description} onChange={handleChange} className="w-full border px-3 py-2 rounded text-black min-h-[200px]" placeholder="Description" required />
       <input name="startDate" type="date" value={form.startDate} onChange={handleChange} className="w-full border px-3 py-2 rounded text-black" required />
       <input name="endDate" type="date" value={form.endDate} onChange={handleChange} className="w-full border px-3 py-2 rounded text-black" />
 
       {degreeUrl && (
-        <div className="flex items-center gap-2 text-sm mt-2">
-          <a href={degreeUrl} target="_blank" rel="noreferrer" className="text-blue-600 underline truncate max-w-xs">
-            {degreeUrl.split('/').pop()}
-          </a>
-          <button
-            type="button"
-            className="text-red-500 hover:underline"
-            onClick={() => {
-              setDegreeUrl(null);
-              setFile(null);
-              if (fileInputRef.current) fileInputRef.current.value = '';
-            }}
-          >
-            ❌
-          </button>
+        <div className="mt-2 text-sm text-black">
+          <div className="inline-flex flex-wrap items-center gap-2 max-w-full">
+            <a
+              href={degreeUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="text-blue-600 underline break-words break-all"
+            >
+              {degreeUrl.split('/').pop()}
+            </a>
+            <button
+              type="button"
+              className="text-red-500 hover:underline text-xs"
+              onClick={() => {
+                setDegreeUrl(null);
+                setFile(null);
+                if (fileInputRef.current) fileInputRef.current.value = '';
+              }}
+            >
+              ❌
+            </button>
+          </div>
         </div>
       )}
 

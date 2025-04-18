@@ -28,7 +28,7 @@ export default function ProjectsPage() {
   return (
     <div className="bg-slate-900 text-white min-h-screen pt-24 px-6 desktop:px-20">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-3xl font-bold mb-10">Project Categories</h1>
+        <h1 className="text-3xl font-bold mb-10 pl-4">Project Categories</h1>
         <div className="flex flex-wrap justify-center gap-6">
           {categories.map((c, i) => (
             <Link

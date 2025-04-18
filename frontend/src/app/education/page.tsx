@@ -2,7 +2,7 @@
 'use client';
 
 import { useMutation, useQuery } from '@apollo/client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { GET_EDUCATIONS, DELETE_EDUCATION } from '@/graphql';
 import { useIsLoggedIn } from '@/hooks/useIsLoggedIn';
 import EducationForm from '@/components/dashboard/EducationForm';
@@ -18,7 +18,15 @@ export default function Education() {
   const [editItem, setEditItem] = useState(null);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
 
+  useEffect(() => {
+    const checkScreen = () => setIsMobile(window.innerWidth <= 425);
+    checkScreen();
+    window.addEventListener('resize', checkScreen);
+    return () => window.removeEventListener('resize', checkScreen);
+  }, []);
+  
   const handleDelete = async (id: string) => {
     await deleteEducation({ variables: { id } });
     setConfirmDelete(null);
@@ -46,54 +54,51 @@ export default function Education() {
       <div className="max-w-7xl mx-auto">
         <h1 className="text-3xl font-bold mb-10 pl-4">Educations</h1>
 
-        {loading && <p>Loading...</p>}
+        {loading && <p className="pl-4">Loading...</p>}
 
         <div className="space-y-4 mb-6">
-          {sortedEducations.map((edu: any) => {
+          {sortedEducations.map((item: any) => {
             return (
               <div
-                key={edu.id}
+                key={item.id}
                 className="group block rounded-lg p-4 transition hover:bg-slate-700 hover:-translate-x-2"
               >
-                <div className="flex items-start gap-6 flex-wrap">
+                <div className="flex items-start gap-6">
                   {/* Date */}
-                  <div className="pt-1 text-sm text-slate-400 break-words overflow-visible">
-                    {formatMonthYear(edu.startDate)} – {edu.endDate ? formatMonthYear(edu.endDate) : 'Present'}
+                  <div
+                    className={`pt-1 text-sm text-slate-400 leading-snug ${
+                      isMobile ? 'max-w-[90px]' : 'whitespace-nowrap'
+                    }`}
+                  >
+                    {isMobile ? (
+                      <>
+                        {item.startDate ? formatMonthYear(item.startDate) : 'N/A'}
+                        <div className="text-center">–</div>
+                        {item.endDate ? formatMonthYear(item.endDate) : 'Now'}
+                      </>
+                    ) : (
+                      <>
+                        {item.startDate ? formatMonthYear(item.startDate) : 'N/A'} –{' '}
+                        {item.endDate ? formatMonthYear(item.endDate) : 'Now'}
+                      </>
+                    )}
                   </div>
 
-                  <div className="flex-1 space-y-2">
+                  <div className="flex-1 w-full min-w-0 space-y-2">
                     <div className="flex flex-wrap justify-between items-start gap-2">
                       {/* Degree + School */}
-                      <div>
-                        <h3 className="text-lg font-bold text-white group-hover:text-cyan-300 transition">
-                          {edu.degree}{' '}
-                          <span className="text-cyan-300">@ {edu.school}</span>
-                        </h3>
-
-                        <div className="text-sm text-cyan-300 flex flex-wrap gap-4 items-center">
-                          <p>{edu.program}</p>
-                          {edu.degreeUrl && (
-                            <div>📝{' '}
-                              <a
-                                href={edu.degreeUrl}
-                                target="_blank"
-                                rel="noreferrer"
-                                className="text-cyan-400 hover:underline"
-                              >
-                                Degree
-                              </a>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-
+                      <h3 className="text-lg font-bold text-white group-hover:text-cyan-300 transition">
+                        {item.degree}{' '}
+                        <span className="text-cyan-300">@ {item.school}</span>
+                      </h3>
+                      
                       {/* Edit/Delete Buttons */}
                       {isLoggedIn && (
                         <div className="flex gap-3">
                           <button
                             className="text-xs text-yellow-400 hover:underline"
                             onClick={() => {
-                              setEditItem(edu);
+                              setEditItem(item);
                               setShowForm(true);
                             }}
                           >
@@ -101,29 +106,43 @@ export default function Education() {
                           </button>
                           <button
                             className="text-xs text-red-400 hover:underline"
-                            onClick={() => setConfirmDelete(edu.id)}
+                            onClick={() => setConfirmDelete(item.id)}
                           >
                             Delete
                           </button>
                         </div>
                       )}
                     </div>
+                    
+                    {/* Major + Degree */}
+                    <div className="text-sm text-cyan-400 flex flex-wrap gap-4 items-center">
+                      <p>{item.program}</p>
+                      {item.degreeUrl && (
+                        <div>📝{' '}
+                          <a
+                            href={item.degreeUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="text-cyan-400 hover:underline"
+                          >
+                            Degree
+                          </a>
+                        </div>
+                      )}
+                    </div>
 
                     {/* Description */}
                     <div className="text-slate-300 text-sm space-y-1">
-                      {edu.description
-                        .split('\n')
-                        .filter((line: string) => line.trim())
+                      {item.description
+                        .split(/(?<=\.)\s+(?=-)/g) // split after "." and before "-"
                         .map((line: string, idx: number) => (
-                          <p key={idx} className={idx === 0 ? '' : 'pl-2'}>
-                            {line.trim()}
-                          </p>
-                      ))}
+                          <p key={idx}>{line.trim()}</p>
+                        ))}
                     </div>
 
                     {/* Skills */}
                     <div className="flex flex-wrap gap-2">
-                      {edu.skills?.map((tag: string, i: number) => (
+                      {item.skills?.map((tag: string, i: number) => (
                         <span
                           key={`tag-${i}`}
                           className="bg-teal-400/10 text-teal-300 px-3 py-1 text-xs rounded-full font-medium"

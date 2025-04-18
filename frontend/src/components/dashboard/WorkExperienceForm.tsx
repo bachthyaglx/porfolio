@@ -134,71 +134,87 @@ export default function WorkExperienceForm({ isOpen, onClose, onSuccess, initial
       <input name="start" type="date" value={form.start} onChange={handleChange} className="w-full border px-3 py-2 rounded text-black" required />
       <input name="end" type="date" value={form.end} onChange={handleChange} className="w-full border px-3 py-2 rounded text-black" />
       <input name="skills" value={form.skills} onChange={handleChange} className="w-full border px-3 py-2 rounded text-black" placeholder="Skills (comma separated, eg: React.js, JavaScript, Redux, etc...)" />
-      <textarea name="description" value={form.description} onChange={handleChange} className="w-full border px-3 py-2 rounded text-black" placeholder="Description (eg: Maintaince the existing software architecture, etc...)" />
+      <textarea name="description" value={form.description} onChange={handleChange} className="w-full border px-3 py-2 rounded text-black min-h-[200px]" placeholder="Description (eg: Maintaince the existing software architecture, etc...)" />
 
       <div className="flex gap-6">
-        {/* Contract File Upload */}
-        <div>
-          <span className="text-sm">Contract File (PDF)</span>
-          {contractFileUrl ? (
-            <div className="flex items-center gap-2 mt-1">
-              <a href={contractFileUrl} target="_blank" rel="noreferrer" className="text-blue-600 underline text-sm">
-                {contractFileUrl.split('/').pop()}
-              </a>
-              <button
-                type="button"
-                onClick={() => {
-                  setContractFileUrl(null);
-                  setContractFile(null);
-                  contractInputRef.current?.value && (contractInputRef.current.value = '');
-                  setDeleteOnSubmit((prev) => ({ ...prev, contract: true }));
-                }}
-                className="text-red-500 text-xs hover:underline"
-              >
-                ❌
-              </button>
-            </div>
-          ) : (
-            <input
-              ref={contractInputRef}
-              type="file"
-              accept=".pdf"
-              onChange={(e) => setContractFile(e.target.files?.[0] || null)}
-              className="mt-1"
-            />
-          )}
-        </div>
+        <div className="flex flex-col gap-4 sm:flex-row sm:gap-6">
+          {/* Contract File */}
+          <div className="flex-1">
+            <label className="block mb-1">Contract File (PDF)</label>
+            {contractFileUrl ? (
+              <div className="text-sm text-blue-600">
+                <div className="flex flex-wrap items-center gap-2 break-words max-w-full">
+                  <a
+                    href={contractFileUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="underline break-all"
+                  >
+                    {contractFileUrl.split('/').pop()}
+                  </a>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setContractFileUrl(null);
+                      setContractFile(null);
+                      contractInputRef.current?.value && (contractInputRef.current.value = '');
+                      setDeleteOnSubmit((prev) => ({ ...prev, contract: true }));
+                    }}
+                    className="text-red-500 text-xs hover:underline"
+                  >
+                    ❌
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <input
+                ref={contractInputRef}
+                type="file"
+                accept=".pdf"
+                onChange={(e) => setContractFile(e.target.files?.[0] || null)}
+                className="mt-1"
+              />
+            )}
+          </div>
 
-        {/* Feedback File Upload */}
-        <div>
-          <span className="text-sm">Feedback File (PDF)</span>
-          {feedbackFileUrl ? (
-            <div className="flex items-center gap-2 mt-1">
-              <a href={feedbackFileUrl} target="_blank" rel="noreferrer" className="text-blue-600 underline text-sm">
-                {feedbackFileUrl.split('/').pop()}
-              </a>
-              <button
-                type="button"
-                onClick={() => {
-                  setFeedbackFileUrl(null);
-                  setFeedbackFile(null);
-                  feedbackInputRef.current?.value && (feedbackInputRef.current.value = '');
-                  setDeleteOnSubmit((prev) => ({ ...prev, feedback: true }));
-                }}
-                className="text-red-500 text-xs hover:underline"
-              >
-                ❌
-              </button>
-            </div>
-          ) : (
-            <input
-              ref={feedbackInputRef}
-              type="file"
-              accept=".pdf"
-              onChange={(e) => setFeedbackFile(e.target.files?.[0] || null)}
-              className="mt-1"
-            />
-          )}
+          {/* Feedback File */}
+          <div className="flex-1">
+            <label className="block mb-1">Feedback File (PDF)</label>
+            {feedbackFileUrl ? (
+              <div className="text-sm text-blue-600">
+                <div className="flex flex-wrap items-center gap-2 break-words max-w-full">
+                  <a
+                    href={feedbackFileUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="underline break-all"
+                  >
+                    {feedbackFileUrl.split('/').pop()}
+                  </a>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setFeedbackFileUrl(null);
+                      setFeedbackFile(null);
+                      feedbackInputRef.current?.value && (feedbackInputRef.current.value = '');
+                      setDeleteOnSubmit((prev) => ({ ...prev, feedback: true }));
+                    }}
+                    className="text-red-500 text-xs hover:underline"
+                  >
+                    ❌
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <input
+                ref={feedbackInputRef}
+                type="file"
+                accept=".pdf"
+                onChange={(e) => setFeedbackFile(e.target.files?.[0] || null)}
+                className="mt-1"
+              />
+            )}
+          </div>
         </div>
       </div>
 

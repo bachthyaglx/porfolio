@@ -120,25 +120,33 @@ export default function CertificateForm({ isOpen, onClose, onSuccess, initialDat
       <input name="title" value={form.title} onChange={handleChange} className="w-full border px-3 py-2 rounded text-black" placeholder="Title" required />
       <input name="organization" value={form.organization} onChange={handleChange} className="w-full border px-3 py-2 rounded text-black" placeholder="Organization" required />
       <input name="skills" value={form.skills} onChange={handleChange} className="w-full border px-3 py-2 rounded text-black" placeholder="Skills (comma separated)" />
-      <textarea name="description" value={form.description} onChange={handleChange} className="w-full border px-3 py-2 rounded text-black" placeholder="Description" required />
+      <textarea name="description" value={form.description} onChange={handleChange} className="w-full border px-3 py-2 rounded text-black min-h-[200px]" placeholder="Description" required />
       <input name="dateAchieved" type="date" value={form.dateAchieved} onChange={handleChange} className="w-full border px-3 py-2 rounded text-black" required />
 
       <div>
         <span className="text-sm">Certificate Files (PDF/Image)</span>
+
         {certificateFileUrls.length > 0 && (
-          <ul className="mt-2 text-sm text-black space-y-1">
+          <ul className="mt-2 text-sm text-black space-y-2">
             {certificateFileUrls.map((url, idx) => (
-              <li key={idx} className="flex items-center gap-2">
-                <a href={url} target="_blank" rel="noreferrer" className="text-blue-600 underline truncate max-w-xs">
-                  {url.split('/').pop()}
-                </a>
-                <button
-                  type="button"
-                  onClick={() => handleRemoveFileUrl(idx)}
-                  className="text-red-500 text-xs hover:underline ml-2"
-                >
-                  ❌
-                </button>
+              <li key={idx} className="w-full">
+                <div className="inline-flex flex-wrap items-center gap-2 max-w-full">
+                  <a
+                    href={url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-blue-600 underline break-words break-all"
+                  >
+                    {url.split('/').pop()}
+                  </a>
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveFileUrl(idx)}
+                    className="text-red-500 text-xs hover:underline"
+                  >
+                    ❌
+                  </button>
+                </div>
               </li>
             ))}
           </ul>
