@@ -3,13 +3,19 @@ First, install node modules:
 ```bash
 npm install
 ```
-
-Second, run the server, you have 2 options:
-* Run development server:
+Second, prepare .env.development and .env.production which contains variables need to run the app regarding to environment. 
+You can also use only one .env file rather than multiple environments. 
+```bash
+NEXT_PUBLIC_API_ENV=prod
+NEXT_PUBLIC_DEV_GRAPHQL_URL='your_local_graphql_server' (eg: http://localhost:4000/graphql)
+NEXT_PUBLIC_PROD_GRAPHQL_URL='your_deployed_graphql_server' (eg: https://your-host-name/graphql)
+```
+Third, run the server:
+* Option 1 - Run development server:
 ```bash
 npm run dev
 ```
-* Run production server:
+* Option 2 - Run production server:
 ```bash
 npm run prod
 ```
