@@ -7,4 +7,4 @@ Frontend app is deployed on Vercel, and backend app is deployed on Railways.
 ## Web Architecture
 https://medium.com/@rahamatelahi2/implementing-redis-caching-in-a-full-stack-web-application-4f3291e3a0e8
 
-![alt text](image.png)
+![image](https://github.com/user-attachments/assets/e45c444b-6a70-412d-875b-d9f6ebe28532)
