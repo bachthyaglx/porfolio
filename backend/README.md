@@ -37,7 +37,7 @@ npm run dev
 npm run prod
 ```
 
-Open [http://localhost:3000](http://localhost:4000/graphql) with your browser to see the result.
+Open http://localhost:4000/graphql with your browser to see the result.
 
 ## Deploy the backend server on Railway
 The tutorial how to deploy backend server (GraphQL, postgreSQL, redis) all in one on railway.
