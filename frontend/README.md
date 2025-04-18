@@ -1,20 +1,17 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
 ## Getting Started
 First, install node modules:
 ```bash
 npm install
 ```
 
-Second, run the development server:
+Second, run the server, you have 2 options:
+* Run development server:
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```
+* Run production server:
+```bash
+npm run prod
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
@@ -29,8 +26,3 @@ The tutorial how to deploy next.js app on Vercel
 To learn more about Next.js, take a look at the following resources:
 - [React Foundations](https://nextjs.org/learn/react-foundations)
 - [Learn Next.js](https://nextjs.org/learn)
-
-## Web Architecture
-https://medium.com/@rahamatelahi2/implementing-redis-caching-in-a-full-stack-web-application-4f3291e3a0e8
-
-![alt text](image.png)
