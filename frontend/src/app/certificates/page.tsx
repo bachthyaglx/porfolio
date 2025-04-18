@@ -38,7 +38,7 @@ export default function Certificates() {
   return (
     <div className="bg-slate-900 text-white min-h-screen pt-24 px-6 desktop:px-20">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-3xl font-bold mb-10">Certificates</h1>
+      <h1 className="text-3xl font-bold mb-10 pl-4">Certificates</h1>
 
         {loading && <p>Loading...</p>}
 
@@ -52,16 +52,20 @@ export default function Certificates() {
 
               return (
                 <div key={item.id} className="group block rounded-lg p-4 transition hover:bg-slate-700 hover:-translate-x-2">
-                  <div className="flex items-start gap-6">
-                    <div className="pt-1 w-30 shrink-0 text-sm text-slate-400">
+                  <div className="flex items-start gap-6 flex-wrap">
+                    {/* Date */}
+                    <div className="pt-1 text-sm text-slate-400 break-words overflow-visible">
                       {formatMonthYear(item.dateAchieved)}
                     </div>
+
                     <div className="flex-1 w-full min-w-0 space-y-2">
                       <div className="flex flex-wrap justify-between items-start gap-2">
+                        {/* Title + Organization */}
                         <h3 className="text-lg font-bold text-white group-hover:text-cyan-300 transition">
                           {item.title}{' '}
                           <span className="text-cyan-300">@ {item.organization}</span>
                         </h3>
+                        {/* Buttons Row */}
                         {isLoggedIn && (
                           <div className="flex gap-3">
                             <button
@@ -82,7 +86,8 @@ export default function Certificates() {
                           </div>
                         )}
                       </div>
-
+                      
+                      {/* Description */}
                       <div className="text-slate-300 text-sm space-y-1">
                         {item.description
                           .split('-')
@@ -91,7 +96,8 @@ export default function Certificates() {
                             <p key={idx}>- {line.trim()}</p>
                           ))}
                       </div>
-
+                      
+                      {/* Skills */}
                       <div className="flex flex-wrap gap-2">
                         {item.skills.map((tag: string, i: number) => (
                           <span
@@ -113,7 +119,7 @@ export default function Certificates() {
                           return (
                             <div
                               key={idx}
-                              className="border border-slate-700 rounded overflow-hidden w-[370px] hover:shadow-xl transition-transform duration-200"
+                              className="rounded overflow-hidden w-[370px] hover:shadow-xl transition-transform duration-200"
                             >
                               {(isImage || isPDF) ? (
                                 <a
@@ -128,23 +134,24 @@ export default function Certificates() {
                                       className="w-[370px] h-auto object-contain"
                                     />
                                   ) : (
-                                    <div className="relative w-[383px] aspect-video overflow-hidden">
+                                    <div className="relative">
                                       <iframe
                                         src={url}
                                         title={`pdf-${idx}`}
-                                        className="absolute top-0 left-0 w-[383px] h-full pointer-events-none no-scrollbar"
+                                        className="w-[320px] h-[280px] no-scrollbar"
                                         style={{
                                           border: 'none',
                                           overflow: 'hidden',
                                         }}
                                       />
-                                      <div className="absolute inset-0 z-10" />
+                                      {/* Optional overlay for better clickability or visual feedback */}
+                                      <div className="absolute inset-0 z-10"></div>
                                     </div>
                                   )}
                                 </a>
                               ) : (
                                 <div className="p-4 text-sm text-center w-full">
-                                  📄{' '}
+                                  📝{' '}
                                   <a
                                     href={url}
                                     {...(!isMobile ? { target: '_blank', rel: 'noreferrer' } : {})}

@@ -45,7 +45,7 @@ export default function ProjectsByCategoryPage() {
   return (
     <div className="bg-slate-900 text-white min-h-screen pt-24 px-6 desktop:px-20">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-3xl font-bold mb-10">{readableTitle(category)}</h1>
+        <h1 className="text-3xl font-bold mb-10 pl-4">{readableTitle(category)}</h1>
 
         {loading && <p>Loading...</p>}
         {!loading && filteredProjects?.length === 0 && (
@@ -58,7 +58,7 @@ export default function ProjectsByCategoryPage() {
               key={item.id}
               className="group block rounded-lg p-4 transition hover:bg-slate-700 hover:-translate-x-2"
             >
-              <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:gap-6">
+              <div className="flex items-start gap-6 flex-wrap">
                 <div className="flex-1 space-y-2">
                   <div className="flex flex-wrap justify-between items-start gap-2">
                     {/* Title + Link */}
@@ -68,7 +68,7 @@ export default function ProjectsByCategoryPage() {
 
                     {/* Edit | Delete */}
                     {isLoggedIn && (
-                      <div className="flex gap-3 shrink-0">
+                      <div className="flex gap-3">
                         <button
                           className="text-xs text-yellow-400 hover:underline"
                           onClick={() => {

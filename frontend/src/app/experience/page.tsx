@@ -39,16 +39,16 @@ export default function ExperiencePage() {
   return (
     <div className="bg-slate-900 text-white min-h-screen pt-24 px-6 desktop:px-20">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-3xl font-bold mb-10">Work Experience</h1>
+        <h1 className="text-3xl font-bold mb-10 pl-4">Work Experience</h1>
 
         {loading && <p>Loading...</p>}
 
         <div className="space-y-4 mb-6">
           {data?.getWorkExperiences.map((item: any) => (
             <div key={item.id} className="group block rounded-lg p-4 transition hover:bg-slate-700 hover:-translate-x-2">
-              <div className="flex items-start gap-6">
+              <div className="flex items-start gap-6 flex-wrap"> 
                 {/* Date */}
-                <div className="pt-1 w-50 shrink-0 text-sm text-slate-400">
+                <div className="pt-1 text-sm text-slate-400 break-words overflow-visible">
                   {item.startDate ? formatMonthYear(item.startDate) : 'N/A'} – {item.endDate ? formatMonthYear(item.endDate) : 'Now'}
                 </div>
 

@@ -44,24 +44,21 @@ export default function Education() {
   return (
     <div className="bg-slate-900 text-white min-h-screen pt-24 px-6 desktop:px-20">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-3xl font-bold mb-10">Educations</h1>
+        <h1 className="text-3xl font-bold mb-10 pl-4">Educations</h1>
 
         {loading && <p>Loading...</p>}
 
         <div className="space-y-4 mb-6">
           {sortedEducations.map((edu: any) => {
-            const start = formatMonthYear(edu.startDate);
-            const end = edu.endDate ? formatMonthYear(edu.endDate) : 'Present';
-
             return (
               <div
                 key={edu.id}
                 className="group block rounded-lg p-4 transition hover:bg-slate-700 hover:-translate-x-2"
               >
-                <div className="flex items-start gap-6">
+                <div className="flex items-start gap-6 flex-wrap">
                   {/* Date */}
-                  <div className="pt-1 w-50 shrink-0 text-sm text-slate-400">
-                    {start} – {end}
+                  <div className="pt-1 text-sm text-slate-400 break-words overflow-visible">
+                    {formatMonthYear(edu.startDate)} – {edu.endDate ? formatMonthYear(edu.endDate) : 'Present'}
                   </div>
 
                   <div className="flex-1 space-y-2">
@@ -121,11 +118,11 @@ export default function Education() {
                           <p key={idx} className={idx === 0 ? '' : 'pl-2'}>
                             {line.trim()}
                           </p>
-                        ))}
+                      ))}
                     </div>
 
                     {/* Skills */}
-                    <div className="flex flex-wrap gap-2 mt-2 max-w-full">
+                    <div className="flex flex-wrap gap-2">
                       {edu.skills?.map((tag: string, i: number) => (
                         <span
                           key={`tag-${i}`}
