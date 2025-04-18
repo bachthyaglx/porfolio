@@ -3,7 +3,7 @@ First, install node modules:
 ```bash
 npm install
 ```
-Second, prepare .env.development and .env.production which contains variables need to run the app regarding to environment. 
+Second, prepare .env.development and .env.production files which contain variables need to run the app regarding to environment. 
 You can also use only one .env file rather than multiple environments. 
 ```bash
 NEXT_PUBLIC_API_ENV=prod
