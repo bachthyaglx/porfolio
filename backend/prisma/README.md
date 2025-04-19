@@ -1,19 +1,19 @@
 ## Tips to use prisma
 NOTE: Prisma only regconize environment file by .env. Before doing migration, remame .env.development or .env.production file to .env for which db from the environment you would like to apply migration. 
 
-Create + apply migration
+Step 1 - Create + apply migration
 ```bash
 npx prisma migrate dev --name name_of_migration
 ```
-Push schema (no migration)
+Step 2 - Push schema (no migration)
 ```bash
 npx prisma db push
 ```
-Generate client
+Step 3 - Generate client
 ```bash
 npx prisma generate
 ```
-Drop database
+Drop database (if needed)
 ```bash
 npx prisma migrate reset
 ```
