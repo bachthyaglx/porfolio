@@ -13,12 +13,16 @@ Step 3 - Generate client
 ```bash
 npx prisma generate
 ```
+Step 4 - Apply migration files to a database.
+```bash
+npx prisma migrate deploy
+```
+
+## Best practice for production
 Drop database (if needed)
 ```bash
 npx prisma migrate reset
 ```
-
-## Best practice for production
 Versioned, reversible migrations
 ```bash
 npx prisma migrate dev 
@@ -26,4 +30,8 @@ npx prisma migrate dev
 Prototyping only or on non-critical dev databases
 ```bash
 db push
+```
+Generate the migration file but NOT apply it
+```bash
+npx prisma migrate dev --create-only --name your_migration_name
 ```
