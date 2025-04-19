@@ -23,11 +23,12 @@ export const typeDefs = gql`
     company: String!
     type: String!
     startDate: String!
-    endDate: String!
+    endDate: String
     skills: [String!]!
     description: String!
-    contractFileUrl: String!
-    feedbackFileUrl: String!
+    contractFileUrl: String
+    feedbackFileUrl: String
+    demoUrl: String
   }
   
   input CreateCertificateInput {
@@ -48,14 +49,16 @@ export const typeDefs = gql`
     startDate: String!
     endDate: String
     degreeUrl: String
+    transcriptUrl: String
+    enrollmentUrl: String
   }
 
   input CreateProjectInput {
     title: String!
     skills: [String!]!
     description: String!
-    category: String
-    projectUrl: String!
+    category: String!
+    projectUrl: String
   }
 
   type WorkExperience {
@@ -67,8 +70,9 @@ export const typeDefs = gql`
     endDate: String!
     skills: [String!]!
     description: String!
-    contractFileUrl: String!
-    feedbackFileUrl: String!
+    contractFileUrl: String
+    feedbackFileUrl: String
+    demoUrl: String
   }
 
   type Certificate {
@@ -90,9 +94,10 @@ export const typeDefs = gql`
     skills: [String!]!
     description: String!
     startDate: String!
-    endDate: String!
-    degreeUrl: String!
-    createdAt: String!
+    endDate: String
+    degreeUrl: String
+    transcriptUrl: String
+    enrollmentUrl: String
   }
 
   type Project {
@@ -100,8 +105,8 @@ export const typeDefs = gql`
     title: String!
     skills: [String!]!
     description: String!
-    projectUrl: String!
-    category: String
+    projectUrl: String
+    category: String!
     createdAt: String!
   }
 

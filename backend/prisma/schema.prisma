@@ -31,12 +31,13 @@ model WorkExperience {
   title           String
   company         String
   type            String
-  startDate       DateTime
-  endDate         DateTime
+  startDate       DateTime @db.Date
+  endDate         DateTime @db.Date
   skills          String[]
   description     String
-  contractFileUrl String
-  feedbackFileUrl String
+  contractFileUrl String?
+  feedbackFileUrl String?
+  demoUrl         String?
   createdAt       DateTime @default(now())
   user            User     @relation(fields: [userId], references: [id])
   userId          Int
@@ -48,7 +49,7 @@ model Certificate {
   organization       String
   skills             String[]
   description        String
-  dateAchieved       DateTime
+  dateAchieved       DateTime @db.Date
   certificateFileUrl String[]
   createdAt          DateTime @default(now())
   user               User     @relation(fields: [userId], references: [id])
@@ -60,14 +61,16 @@ model Education {
   degree      String
   program     String
   school      String
-  startDate   DateTime
-  endDate     DateTime
+  startDate   DateTime @db.Date
+  endDate     DateTime @db.Date
   skills      String[]
   description String
-  degreeUrl   String
+  degreeUrl   String?
+  transcriptUrl String?
+  enrollmentUrl String?
   createdAt   DateTime @default(now())
-  user            User     @relation(fields: [userId], references: [id])
-  userId          Int
+  user        User     @relation(fields: [userId], references: [id])
+  userId      Int
 }
 
 model Project {

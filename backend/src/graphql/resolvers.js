@@ -165,8 +165,8 @@ export const resolvers = {
         const experience = await prisma.workExperience.create({
           data: {
             ...input,
-            startDate: new Date(input.startDate),
-            endDate: new Date(input.endDate),
+            startDate: input.startDate,
+            endDate: input.endDate || null,
             userId: context.userId,
           },
         });
@@ -209,7 +209,7 @@ export const resolvers = {
         const certificate = await prisma.certificate.create({
           data: {
             ...input,
-            dateAchieved: new Date(input.dateAchieved),
+            dateAchieved: input.dateAchieved,
             certificateFileUrl: { set: input.certificateFileUrl },
             userId: context.userId,
           },
@@ -232,8 +232,8 @@ export const resolvers = {
         const education = await prisma.education.create({
           data: {
             ...input,
-            startDate: new Date(input.startDate),
-            endDate: new Date(input.endDate),
+            startDate: input.startDate,
+            endDate: input.endDate || null,
             userId: context.userId,
           },
         });
@@ -255,8 +255,8 @@ export const resolvers = {
         where: { id },
         data: {
           ...input,
-          startDate: new Date(input.startDate),
-          endDate: input.endDate ? new Date(input.endDate) : null,
+          startDate: input.startDate,
+          endDate: input.endDate || null,
         },
       });
       
@@ -284,7 +284,7 @@ export const resolvers = {
         where: { id },
         data: {
           ...input,
-          dateAchieved: new Date(input.dateAchieved),
+          dateAchieved: input.dateAchieved,
         },
       });
       
@@ -302,8 +302,8 @@ export const resolvers = {
           where: { id },
           data: {
             ...input,
-            startDate: new Date(input.startDate),
-            endDate: input.endDate ? new Date(input.endDate) : null,
+            startDate: input.startDate,
+            endDate: input.endDate || null,
           },
         });
     
