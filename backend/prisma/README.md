@@ -1,4 +1,6 @@
 ## Tips to use prisma
+NOTE: Before doing migration, remame .env.development or .env.production file to .env for which db from the environment you would like to apply migration.
+
 Create + apply migration
 ```bash
 npx prisma migrate dev --name name_of_migration
