@@ -8,7 +8,6 @@ import { Key, useEffect, useState } from 'react';
 import WorkExperienceForm from '@/components/dashboard/WorkExperienceForm';
 import LoginModal from '@/components/auth/LoginModal';
 
-
 export default function ExperiencePage() {
   const { data, loading, refetch } = useQuery(GET_WORK_EXPERIENCES, {
     fetchPolicy: 'cache-and-network',
