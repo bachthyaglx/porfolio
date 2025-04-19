@@ -35,3 +35,7 @@ Generate the migration file but NOT apply it
 ```bash
 npx prisma migrate dev --create-only --name your_migration_name
 ```
+List migration history
+```bash
+npx prisma migrate status
+```
