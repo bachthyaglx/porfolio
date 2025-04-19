@@ -28,7 +28,7 @@ export const typeDefs = gql`
     description: String!
     contractFileUrl: String
     feedbackFileUrl: String
-    demoUrl: String
+    demoFileUrl: String
   }
   
   input CreateCertificateInput {
@@ -48,9 +48,9 @@ export const typeDefs = gql`
     description: String!
     startDate: String!
     endDate: String
-    degreeUrl: String
-    transcriptUrl: String
-    enrollmentUrl: String
+    degreeFileUrl: String
+    transcriptFileUrl: String
+    enrollmentFileUrl: String
   }
 
   input CreateProjectInput {
@@ -72,7 +72,8 @@ export const typeDefs = gql`
     description: String!
     contractFileUrl: String
     feedbackFileUrl: String
-    demoUrl: String
+    demoFileUrl: String
+    createdAt: String!
   }
 
   type Certificate {
@@ -95,9 +96,10 @@ export const typeDefs = gql`
     description: String!
     startDate: String!
     endDate: String
-    degreeUrl: String
-    transcriptUrl: String
-    enrollmentUrl: String
+    degreeFileUrl: String
+    transcriptFileUrl: String
+    enrollmentFileUrl: String
+    createdAt: String!
   }
 
   type Project {

@@ -344,6 +344,11 @@ export const resolvers = {
         await deleteFileFromS3(work.feedbackFileUrl);
       }
     
+      // Delete files from S3 (feedbackFileUrl)
+      if (work.demoFileUrl) {
+        await deleteFileFromS3(work.demoFileUrl);
+      }
+
       await prisma.workExperience.delete({ where: { id } });
       
       // 🧹 clear cache
@@ -383,10 +388,18 @@ export const resolvers = {
       requireAuth(context.userId);
       const edu = await prisma.education.findUnique({ where: { id } });
     
-      if (edu?.degreeUrl) {
-        await deleteFileFromS3(edu.degreeUrl);
+      if (edu?.degreeFileUrl) {
+        await deleteFileFromS3(edu.degreeFileUrl);
       }
-    
+      
+      if (edu?.transcriptFileUrl) {
+        await deleteFileFromS3(edu.transcriptFileUrl);
+      }
+
+      if (edu?.enrollmentFileUrl) {
+        await deleteFileFromS3(edu.enrollmentFileUrl);
+      }
+
       await prisma.education.delete({ where: { id } });
       
       // 🧹 clear cache
