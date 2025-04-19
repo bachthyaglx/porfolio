@@ -65,12 +65,12 @@ export default function ExperiencePage() {
                   <>
                     {item.startDate ? formatMonthYear(item.startDate) : 'N/A'}
                     <div className="text-center">–</div>
-                    {item.endDate ? formatMonthYear(item.endDate) : 'Now'}
+                    {item.endDate ? formatMonthYear(item.endDate) : 'Present'}
                   </>
                 ) : (
                   <>
                     {item.startDate ? formatMonthYear(item.startDate) : 'N/A'} –{' '}
-                    {item.endDate ? formatMonthYear(item.endDate) : 'Now'}
+                    {item.endDate ? formatMonthYear(item.endDate) : 'Present'}
                   </>
                 )}
               </div>
@@ -114,6 +114,11 @@ export default function ExperiencePage() {
                   {item.feedbackFileUrl && (
                     <div className="text-sm text-center">
                       📝 <a href={item.feedbackFileUrl} target="_blank" rel="noreferrer" className="text-cyan-400 hover:underline">Reference Letter</a>
+                    </div>
+                  )}
+                  {item.demoFileUrl && (
+                    <div className="text-sm text-center">
+                      📝 <a href={item.demoFileUrl} target="_blank" rel="noreferrer" className="text-cyan-400 hover:underline">Results/Demo</a>
                     </div>
                   )}
                 </div>

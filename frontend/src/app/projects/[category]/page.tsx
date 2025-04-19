@@ -51,7 +51,7 @@ export default function ProjectsByCategoryPage() {
         {loading && <p className="pl-4">Loading...</p>}
 
         {!loading && filteredProjects?.length === 0 && (
-          <p>No projects found in this category.</p>
+          <p className="pl-4">No projects found in this category.</p>
         )}
 
         <div className="space-y-4 mb-6">

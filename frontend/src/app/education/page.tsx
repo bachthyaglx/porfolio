@@ -43,7 +43,6 @@ export default function Education() {
       ? 'Invalid Date'
       : date.toLocaleDateString('en-US', { year: 'numeric', month: 'short' });
   };
-  
 
   const sortedEducations = [...(data?.getEducations || [])].sort(
     (a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime()
@@ -56,7 +55,6 @@ export default function Education() {
 
         {loading && <p className="pl-4">Loading...</p>}
 
-        <div className="space-y-4 mb-6">
           {sortedEducations.map((item: any) => {
             return (
               <div
@@ -74,12 +72,12 @@ export default function Education() {
                       <>
                         {item.startDate ? formatMonthYear(item.startDate) : 'N/A'}
                         <div className="text-center">–</div>
-                        {item.endDate ? formatMonthYear(item.endDate) : 'Now'}
+                        {item.endDate ? formatMonthYear(item.endDate) : 'Present'}
                       </>
                     ) : (
                       <>
                         {item.startDate ? formatMonthYear(item.startDate) : 'N/A'} –{' '}
-                        {item.endDate ? formatMonthYear(item.endDate) : 'Now'}
+                        {item.endDate ? formatMonthYear(item.endDate) : 'Present'}
                       </>
                     )}
                   </div>
@@ -113,22 +111,25 @@ export default function Education() {
                         </div>
                       )}
                     </div>
-                    
-                    {/* Major + Degree */}
-                    <div className="text-sm text-cyan-400 flex flex-wrap gap-4 items-center">
+
+                    {/* Major + Degree + Transcript + Enrollment */}
+                    <div className="text-sm text-cyan-400 flex flex-wrap gap-4">
                       <p>{item.program}</p>
-                      {item.degreeUrl && (
-                        <div>📝{' '}
-                          <a
-                            href={item.degreeUrl}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="text-cyan-400 hover:underline"
-                          >
-                            Degree
-                          </a>
+                      {item.degreeFileUrl && (
+                        <div className="text-sm text-center">
+                          📝 <a href={item.degreeFileUrl} target="_blank" rel="noreferrer" className="text-cyan-400 hover:underline">Degree</a>
                         </div>
                       )}
+                      {item.transcriptFileUrl && (
+                        <div className="text-sm text-center">
+                          📝 <a href={item.transcriptFileUrl} target="_blank" rel="noreferrer" className="text-cyan-400 hover:underline">Transcript Records</a>
+                        </div>
+                      )}                      
+                      {item.enrollmentFileUrl && (
+                        <div className="text-sm text-center">
+                          📝 <a href={item.enrollmentFileUrl} target="_blank" rel="noreferrer" className="text-cyan-400 hover:underline">Enrollment Letter</a>
+                        </div>
+                      )}    
                     </div>
 
                     {/* Description */}
@@ -235,6 +236,5 @@ export default function Education() {
           onLoginSuccess={() => setShowLoginModal(false)}
         />
       </div>
-    </div>
   );
 }

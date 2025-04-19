@@ -39,4 +39,3 @@ List migration history
 ```bash
 npx prisma migrate status
 ```
-

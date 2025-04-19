@@ -36,24 +36,17 @@ export default function CertificateForm({ isOpen, onClose, onSuccess, initialDat
   const [urlsToDelete, setUrlsToDelete] = useState<string[]>([]);
   const certificateInputRef = useRef<HTMLInputElement>(null);
 
+  const toInputDate = (dateStr: string | null | undefined) =>
+    dateStr ? new Date(dateStr).toISOString().split('T')[0] : '';
+
   useEffect(() => {
     if (initialData) {
-      const safeDate = (value: any) => {
-        if (!value) return '';
-      
-        const date = typeof value === 'number' || !isNaN(Number(value))
-          ? new Date(Number(value))
-          : new Date(value);
-      
-        return isNaN(date.getTime()) ? '' : date.toISOString().split('T')[0];
-      };
-
       setForm({
         title: initialData.title || '',
         organization: initialData.organization || '',
         skills: (initialData.skills || []).join(', '),
         description: initialData.description || '',
-        dateAchieved: safeDate(initialData.dateAchieved),
+        dateAchieved: toInputDate(initialData.dateAchieved),
       });
       setCertificateFileUrls(
         Array.isArray(initialData.certificateFileUrl)

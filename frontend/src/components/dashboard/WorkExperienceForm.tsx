@@ -30,13 +30,17 @@ export default function WorkExperienceForm({ isOpen, onClose, onSuccess, initial
 
   const [contractFile, setContractFile] = useState<File | null>(null);
   const [feedbackFile, setFeedbackFile] = useState<File | null>(null);
+  const [demoFile, setDemoFile] = useState<File | null>(null);
+
   const [contractFileUrl, setContractFileUrl] = useState<string | null>(null);
   const [feedbackFileUrl, setFeedbackFileUrl] = useState<string | null>(null);
+  const [demoFileUrl, setDemoFileUrl] = useState<string | null>(null);
 
   const contractInputRef = useRef<HTMLInputElement>(null);
   const feedbackInputRef = useRef<HTMLInputElement>(null);
+  const demoInputRef = useRef<HTMLInputElement>(null);
 
-  const [deleteOnSubmit, setDeleteOnSubmit] = useState({ contract: false, feedback: false });
+  const [deleteOnSubmit, setDeleteOnSubmit] = useState({ contract: false, feedback: false, demo: false });
 
   const toInputDate = (dateStr: string | null | undefined) =>
     dateStr ? new Date(dateStr).toISOString().split('T')[0] : '';
@@ -55,6 +59,7 @@ export default function WorkExperienceForm({ isOpen, onClose, onSuccess, initial
   
       setContractFileUrl(initialData.contractFileUrl || null);
       setFeedbackFileUrl(initialData.feedbackFileUrl || null);
+      setDemoFileUrl(initialData.demoFileUrl || null);
     }
   }, [initialData]);
 
@@ -68,6 +73,7 @@ export default function WorkExperienceForm({ isOpen, onClose, onSuccess, initial
     try {
       let uploadedContractUrl = contractFileUrl;
       let uploadedFeedbackUrl = feedbackFileUrl;
+      let uploadedDemoUrl = demoFileUrl;
 
       // Delete old files only if ❌ was clicked and file wasn't replaced
       if (deleteOnSubmit.contract && !contractFile && !contractFileUrl && initialData?.contractFileUrl) {
@@ -77,6 +83,10 @@ export default function WorkExperienceForm({ isOpen, onClose, onSuccess, initial
       if (deleteOnSubmit.feedback && !feedbackFile && !feedbackFileUrl && initialData?.feedbackFileUrl) {
         await deleteFileFromS3({ variables: { fileUrl: initialData.feedbackFileUrl } });
         uploadedFeedbackUrl = '';
+      }
+      if (deleteOnSubmit.feedback && !demoFile && !demoFileUrl && initialData?.demoFileUrl) {
+        await deleteFileFromS3({ variables: { fileUrl: initialData.demoFileUrl } });
+        uploadedDemoUrl = '';
       }
 
       // Upload new files and optionally delete old ones
@@ -96,16 +106,25 @@ export default function WorkExperienceForm({ isOpen, onClose, onSuccess, initial
         uploadedFeedbackUrl = res?.data?.singleUpload;
       }
 
+      if (demoFile) {
+        if (initialData?.demoFileUrl && !deleteOnSubmit.demo) {
+          await deleteFileFromS3({ variables: { fileUrl: initialData.demoFileUrl } });
+        }
+        const res = await uploadFile({ variables: { file: demoFile } });
+        uploadedDemoUrl = res?.data?.singleUpload;
+      }
+
       const input = {
         title: form.title,
         company: form.company,
         type: form.type,
         startDate: form.start,
-        endDate: form.end || '',
+        endDate: form.end || null,
         skills: form.skills.split(',').map((s) => s.trim()),
         description: form.description,
         contractFileUrl: uploadedContractUrl || '',
         feedbackFileUrl: uploadedFeedbackUrl || '',
+        demoFileUrl: uploadedDemoUrl || '',
       };
 
       if (initialData?.id) {
@@ -114,7 +133,7 @@ export default function WorkExperienceForm({ isOpen, onClose, onSuccess, initial
         await createWork({ variables: { input } });
       }
 
-      setDeleteOnSubmit({ contract: false, feedback: false });
+      setDeleteOnSubmit({ contract: false, feedback: false, demo: false });
       onSuccess();
       onClose();
     } catch (err: any) {
@@ -133,14 +152,14 @@ export default function WorkExperienceForm({ isOpen, onClose, onSuccess, initial
       <input name="type" value={form.type} onChange={handleChange} className="w-full border px-3 py-2 rounded text-black" placeholder="Type (eg: Part-time, Full-time)" required />
       <input name="start" type="date" value={form.start} onChange={handleChange} className="w-full border px-3 py-2 rounded text-black" required />
       <input name="end" type="date" value={form.end} onChange={handleChange} className="w-full border px-3 py-2 rounded text-black" />
-      <input name="skills" value={form.skills} onChange={handleChange} className="w-full border px-3 py-2 rounded text-black" placeholder="Skills (comma separated, eg: React.js, JavaScript, Redux, etc...)" />
-      <textarea name="description" value={form.description} onChange={handleChange} className="w-full border px-3 py-2 rounded text-black min-h-[200px]" placeholder="Description (eg: Maintaince the existing software architecture, etc...)" />
+      <input name="skills" value={form.skills} onChange={handleChange} className="w-full border px-3 py-2 rounded text-black" placeholder="Skills (comma separated, eg: React.js, JavaScript, Redux, etc...)" required/>
+      <textarea name="description" value={form.description} onChange={handleChange} className="w-full border px-3 py-2 rounded text-black min-h-[200px]" placeholder="Description (eg: Maintaince the existing software architecture, etc...)" required/>
 
       <div className="flex gap-6">
         <div className="flex flex-col gap-4 sm:flex-row sm:gap-6">
           {/* Contract File */}
           <div className="flex-1">
-            <label className="block mb-1">Contract File (PDF)</label>
+            <label className="block mb-1">Contract File <i>(optional)</i></label>
             {contractFileUrl ? (
               <div className="text-sm text-blue-600">
                 <div className="flex flex-wrap items-center gap-2 break-words max-w-full">
@@ -177,9 +196,9 @@ export default function WorkExperienceForm({ isOpen, onClose, onSuccess, initial
             )}
           </div>
 
-          {/* Feedback File */}
+          {/* Reference File */}
           <div className="flex-1">
-            <label className="block mb-1">Feedback File (PDF)</label>
+            <label className="block mb-1">Reference File <i>(optional)</i></label>
             {feedbackFileUrl ? (
               <div className="text-sm text-blue-600">
                 <div className="flex flex-wrap items-center gap-2 break-words max-w-full">
@@ -215,12 +234,51 @@ export default function WorkExperienceForm({ isOpen, onClose, onSuccess, initial
               />
             )}
           </div>
+
+          {/* Demo File */}
+          <div className="flex-1">
+            <label className="block mb-1">Result/Demo File <i>(optional)</i></label>
+            {demoFileUrl ? (
+              <div className="text-sm text-blue-600">
+                <div className="flex flex-wrap items-center gap-2 break-words max-w-full">
+                  <a
+                    href={demoFileUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="underline break-all"
+                  >
+                    {demoFileUrl.split('/').pop()}
+                  </a>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setDemoFileUrl(null);
+                      setDemoFile(null);
+                      demoInputRef.current?.value && (demoInputRef.current.value = '');
+                      setDeleteOnSubmit((prev) => ({ ...prev, feedback: true }));
+                    }}
+                    className="text-red-500 text-xs hover:underline"
+                  >
+                    ❌
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <input
+                ref={demoInputRef}
+                type="file"
+                accept=".pdf"
+                onChange={(e) => setDemoFile(e.target.files?.[0] || null)}
+                className="mt-1"
+              />
+            )}
+          </div>
         </div>
       </div>
 
       <div className="flex justify-end gap-4 mt-6">
         <button type="button" onClick={() => {
-          setDeleteOnSubmit({ contract: false, feedback: false });
+          setDeleteOnSubmit({ contract: false, feedback: false, demo: false });
           onClose();
         }} className="text-gray-600 hover:underline">
           Cancel

@@ -14,6 +14,7 @@ export const GET_WORK_EXPERIENCES = gql`
       description
       contractFileUrl
       feedbackFileUrl
+      demoFileUrl
     }
   }
 `;
@@ -57,7 +58,9 @@ export const GET_EDUCATIONS = gql`
       description
       startDate
       endDate
-      degreeUrl
+      degreeFileUrl
+      transcriptFileUrl
+      enrollmentFileUrl
       createdAt
     }
   }
@@ -86,7 +89,18 @@ export const MULTI_UPLOAD = gql`
 export const CREATE_WORK_EXPERIENCE = gql`
   mutation CreateWorkExperience($input: CreateWorkExperienceInput!) {
     createWorkExperience(input: $input) {
-      id
+      id              
+      title           
+      company         
+      type            
+      startDate        
+      endDate         
+      skills          
+      description     
+      contractFileUrl 
+      feedbackFileUrl 
+      demoFileUrl         
+      createdAt         
     }
   }
 `;
@@ -110,6 +124,11 @@ export const CREATE_CERTIFICATE = gql`
       id
       title
       organization
+      skills
+      description
+      dateAchieved
+      certificateFileUrl
+      createdAt
     }
   }
 `;
@@ -125,7 +144,9 @@ export const CREATE_EDUCATION = gql`
       description
       startDate
       endDate
-      degreeUrl
+      degreeFileUrl
+      transcriptFileUrl
+      enrollmentFileUrl
       createdAt
     }
   }
@@ -134,7 +155,18 @@ export const CREATE_EDUCATION = gql`
 export const EDIT_WORK_EXPERIENCE = gql`
   mutation EditWorkExperience($id: String!, $input: CreateWorkExperienceInput!) {
     editWorkExperience(id: $id, input: $input) {
-      id
+      id              
+      title           
+      company         
+      type            
+      startDate        
+      endDate         
+      skills          
+      description     
+      contractFileUrl 
+      feedbackFileUrl 
+      demoFileUrl         
+      createdAt   
     }
   }
 `;
@@ -158,6 +190,12 @@ export const EDIT_CERTIFICATE = gql`
     editCertificate(id: $id, input: $input) {
       id
       title
+      organization
+      skills
+      description
+      dateAchieved
+      certificateFileUrl
+      createdAt
     }
   }
 `;
@@ -173,7 +211,9 @@ export const EDIT_EDUCATION = gql`
       description
       startDate
       endDate
-      degreeUrl
+      degreeFileUrl
+      transcriptFileUrl
+      enrollmentFileUrl
       createdAt
     }
   }
