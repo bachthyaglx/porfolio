@@ -1,10 +1,10 @@
 'use client';
 
-import Typing from '@/components/ui/Typing';
-import SocialMedia from '@/components/ui/SocialMedia';
+import Typing from '@/components/utils/Typing';
+import SocialMedia from '@/components/utils/SocialMedia';
 import Image from 'next/image'
 
-export default function Home() {
+export default function HomePage() {
   return (
     <>
     {/* Greetings and Image */}
