@@ -1,5 +1,5 @@
 // src/graphql/resolvers.js
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import { v4 as uuidv4 } from 'uuid';
 import { createToken } from '../auth/jwt.js';
 import { requireAuth } from '../utils/requireAuth.js';
