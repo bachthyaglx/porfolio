@@ -13,7 +13,7 @@ NODE_ENV='environment_name' (eg: development, or production)
 PORT='4000'
 
 # REDIS_URL
-REDIS_URL='your_redis_server' (eg: redis://localhost:6379)
+REDIS_URL='your_redis_server' (eg: redis://127.0.0.1:6379)
 
 # Auth access
 JWT_SECRET='your_jwt_token' (eg: dmasdxxxxxxxxxxxxadasdxxxxxxxxxxxxxxxxx)
